@@ -29,14 +29,7 @@ class RecipeTableViewCell: UITableViewCell {
     func configure(with recipe: Recipe) {
         recipeNameLabel?.text = recipe.name
         recipeDescriptionLabel?.text = recipe.description
-        
-        //let imageBytes = recipe.imageData
-        //let imageData = NSData(bytes: imageBytes, length: imageBytes.count)
-        //let image = UIImage(data: imageData as Data)
-        //recipeImageView?.image = image
-        
         let imageUrl = URL(string: recipe.imageData)
-        //recipeImageView?.image?.resizingMode = 
         recipeImageView?.kf.setImage(with: imageUrl)
         recipeImageView?.contentMode = .scaleAspectFill
         recipeImageView?.clipsToBounds = true

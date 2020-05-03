@@ -8,7 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecipeTableViewCell" customModule="FoodCourt" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeTableViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="cQs-K6-2sX" customClass="RecipeTableViewCell" customModule="FoodCourt" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeTableViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="cQs-K6-2sX" customClass="RecipeTableViewCell" customModule="FoodCourt" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="cQs-K6-2sX" id="BGq-8r-h0L" customClass="RecipeTableViewCell" customModule="FoodCourt" customModuleProvider="target">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>

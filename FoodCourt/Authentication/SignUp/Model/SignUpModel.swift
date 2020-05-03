@@ -35,23 +35,44 @@ class SignUpModel: SignUpModelProtocol {
 
 extension SignUpModel {
     private func signUp(email: String, password: String, user: User, completion: ((ErrorModel?) -> Void)?) {
-        guard let firstName = user.firstName, let lastName = user.lastName, let username = user.username else { return }
-        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+        guard let firstName = user.firstName, let lastName = user.lastName, let username = user.username else {
+            completion?(ErrorModel.nilUserData)
+            return
+        }
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] (result, error) in
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
-                let err = self.handleError(errorCode: errorCode)
+                let err = self?.handleError(errorCode: errorCode)
                 completion?(err)
             } else  {
-                self.db.collection(Collections.users).document(username).setData([
-                    Fields.firstName: firstName,
-                    Fields.lastName: lastName
-                ]) { (err) in
-                    if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
-                        let err = self.handleError(errorCode: errorCode)
-                        completion?(err)
-                    } else {
-                        completion?(nil)
-                    }
-                }
+                self?.setUserData(firstName: firstName, lastName: lastName, username: username, completion: completion)
+            }
+        }
+    }
+    
+    private func setUserData(firstName: String, lastName: String, username: String,
+                             completion: ((ErrorModel?) -> Void)?) {
+        self.db.collection(Collections.users).document(username).setData([
+            Fields.firstName: firstName,
+            Fields.lastName: lastName
+        ]) { [weak self] (error) in
+            if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
+                let err = self?.handleError(errorCode: errorCode)
+                completion?(err)
+            } else {
+                self?.setUsernameAsDisplayName(username: username, completion: completion)
+            }
+        }
+    }
+    
+    private func setUsernameAsDisplayName(username: String, completion: ((ErrorModel?) -> Void)?) {
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        changeRequest?.displayName = username
+        changeRequest?.commitChanges { [weak self] (error) in
+            if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
+                let err = self?.handleError(errorCode: errorCode)
+                completion?(err)
+            } else {
+                completion?(nil)
             }
         }
     }

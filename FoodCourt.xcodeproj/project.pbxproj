@@ -32,6 +32,8 @@
 		504DB87D245DBECF0052F78E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504DB87C245DBECF0052F78E /* AuthView.swift */; };
 		504DB881245DBF130052F78E /* AuthView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 504DB880245DBF130052F78E /* AuthView.xib */; };
 		504DB886245DCAB30052F78E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 504DB885245DCAB30052F78E /* GoogleService-Info.plist */; };
+		504DB888245F09110052F78E /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504DB887245F09110052F78E /* Ingredient.swift */; };
+		504DB88A245F45960052F78E /* TableCellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504DB889245F45960052F78E /* TableCellConfig.swift */; };
 		5083248C2459F5E70021D804 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5083248B2459F5E70021D804 /* SignUpModel.swift */; };
 		5083248E2459F6020021D804 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5083248D2459F6010021D804 /* SignUpViewModel.swift */; };
 		508324902459F72A0021D804 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5083248F2459F72A0021D804 /* SignUpView.swift */; };
@@ -71,6 +73,8 @@
 		504DB87C245DBECF0052F78E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		504DB880245DBF130052F78E /* AuthView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthView.xib; sourceTree = "<group>"; };
 		504DB885245DCAB30052F78E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		504DB887245F09110052F78E /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
+		504DB889245F45960052F78E /* TableCellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellConfig.swift; sourceTree = "<group>"; };
 		5083248B2459F5E70021D804 /* SignUpModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
 		5083248D2459F6010021D804 /* SignUpViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		5083248F2459F72A0021D804 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 			children = (
 				5001E5A02448E1BD00A2EAA1 /* Recipe.swift */,
 				5007F556245AE80700C40956 /* User.swift */,
+				504DB887245F09110052F78E /* Ingredient.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -165,6 +170,7 @@
 			children = (
 				5007F55D245B12B200C40956 /* Collections.swift */,
 				5007F55F245B267E00C40956 /* Fields.swift */,
+				504DB889245F45960052F78E /* TableCellConfig.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -490,6 +496,8 @@
 				5001E5852448D57200A2EAA1 /* AppDelegate.swift in Sources */,
 				5007F554245AE63F00C40956 /* SignUpViewModelProtocol.swift in Sources */,
 				5001E5A12448E1BD00A2EAA1 /* Recipe.swift in Sources */,
+				504DB888245F09110052F78E /* Ingredient.swift in Sources */,
+				504DB88A245F45960052F78E /* TableCellConfig.swift in Sources */,
 				5007F55E245B12B200C40956 /* Collections.swift in Sources */,
 				5001E5872448D57200A2EAA1 /* SceneDelegate.swift in Sources */,
 				5001E5992448D5CB00A2EAA1 /* RecipeTableView.swift in Sources */,

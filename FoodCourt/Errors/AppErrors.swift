@@ -30,6 +30,7 @@ public struct ErrorView {
     public static let emailAlreadyInUse: String = "This email is already in use"
     public static let weakPassword: String = "Your password is too weak, enter a stronger password"
     public static let usernameAlreadyInUse: String = "This username is already in use"
+    public static let nilUserData: String = "Could not recognize the entered data, try it again"
     
     //signInWithEmail
     public static let userDisabled: String = "Your account is disabled, contact the developers"
@@ -55,6 +56,7 @@ public enum ErrorViewModel {
     case emailAlreadyInUse
     case weakPassword
     case usernameAlreadyInUse
+    case nilUserData
     
     //signInWithEmail
     case userDisabled
@@ -80,6 +82,7 @@ public enum ErrorModel {
     case emailAlreadyInUse
     case weakPassword
     case usernameAlreadyInUse
+    case nilUserData
     
     //signInWithEmail
     case userDisabled

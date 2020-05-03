@@ -26,13 +26,3 @@ public struct Recipe {
         self.rating = rating
     }
 }
-
-public struct Ingredient {
-    let name: String
-    let amount: Int
-    
-    init(name: String, amount: Int) {
-        self.name = name
-        self.amount = amount
-    }
-}

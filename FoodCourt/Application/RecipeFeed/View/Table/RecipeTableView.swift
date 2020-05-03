@@ -13,7 +13,6 @@ class RecipeTableView: UIViewController {
     @IBOutlet weak var recipeTableView: UITableView?
     
     private let cellIdentifier = "RecipeTableViewCell"
-    //private let localDatabaseManager: LocalDatabaseManager = LocalDatabaseManager.shared
     private var recipes = [Recipe]()
     private var viewModel: RecipeTableViewModel?
     
@@ -22,7 +21,7 @@ class RecipeTableView: UIViewController {
         recipeTableView?.dataSource = self
         recipeTableView?.delegate = self
         viewModel = RecipeTableViewModel()
-        self.recipeTableView?.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
+        recipeTableView?.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
         
         viewModel?.loadRecipes { [weak self] (recipes) in
             guard let recipes = recipes else {
@@ -37,9 +36,9 @@ class RecipeTableView: UIViewController {
     }
 }
 
-extension RecipeTableView: UITableViewDataSource {
+extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recipes.count
+        return TableCellConfig.numberOfRowsInSection
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -48,18 +47,28 @@ extension RecipeTableView: UITableViewDataSource {
             return cell
         }
         
-        let recipe = recipes[indexPath.row]
+        cell.layer.cornerRadius = 16
+        cell.layer.masksToBounds = true
+        let recipe = recipes[indexPath.section]
         cell.configure(with: recipe)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 300
+        return TableCellConfig.height
     }
-}
-
-extension RecipeTableView: UITableViewDelegate {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return recipes.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return TableCellConfig.spaceBetweenCells
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
     }
 }
