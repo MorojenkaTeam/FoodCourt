@@ -13,10 +13,11 @@ import Firebase
 
 class SignInModel: SignInModelProtocol {
     func signIn(email: String, password: String, completion: ((ErrorModel?) -> Void)?) {
-        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (result, error) in
+            guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
-                let err = self.handleError(errorCode: errorCode)
-                completion?(err)
+                let receivedError = self.handleError(errorCode: errorCode)
+                completion?(receivedError)
             } else  {
                 completion?(nil)
             }
@@ -48,7 +49,7 @@ extension SignInModel {
         case .wrongPassword:
             return ErrorModel.wrongPassword
         default:
-            return ErrorModel.unknownError
+            return ErrorModel.unknownAuthError
         }
     }
 }

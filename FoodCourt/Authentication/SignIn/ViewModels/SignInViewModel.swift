@@ -17,9 +17,11 @@ class SignInViewModel: SignInViewModelProtocol {
     }
     
     func signIn(email: String, password: String, completion: ((ErrorViewModel?) -> Void)?) {
-        signInModel.signIn(email: email, password: password, completion: { (error) in
-            if let err = error {
-                completion?(self.handleError(error: err))
+        signInModel.signIn(email: email, password: password, completion: { [weak self] (error) in
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleError(error: error)
+                completion?(receivedError)
             } else {
                 completion?(nil)
             }
@@ -51,7 +53,7 @@ extension SignInViewModel {
         case .wrongPassword:
             return ErrorViewModel.wrongPassword
         default:
-            return ErrorViewModel.unknownError
+            return ErrorViewModel.unknownAuthError
         }
     }
 }

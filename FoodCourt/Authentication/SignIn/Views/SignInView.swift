@@ -12,30 +12,62 @@ class SignInView: UIViewController {
     @IBOutlet weak var emailTextField: UITextField?
     @IBOutlet weak var passwordTextField: UITextField?
     @IBOutlet weak var errorLabel: UILabel?
+    @IBOutlet weak var signInButton: UIButton?
+    @IBOutlet weak var scrollView: UIScrollView?
     
+    private var activeTextField: UITextField?
     private var viewModel: SignInViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        errorLabel?.alpha = 0
+        guard let errorLabel = errorLabel else { return }
+        errorLabel.alpha = 0
+        guard let signInButton = signInButton else { return }
+        signInButton.layer.cornerRadius = 16
+        signInButton.clipsToBounds = true
         viewModel = SignInViewModel()
+        
+        guard let emailTextField = emailTextField else { return }
+        emailTextField.delegate = self
+        guard let passwordTextField = passwordTextField else { return }
+        passwordTextField.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerNotifications()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        guard let scrollView = scrollView else { return }
+        scrollView.contentInset.bottom = 0
     }
     
     @IBAction func signInButton(_ sender: Any) {
-        guard let email = emailTextField?.text else { return }
-        guard let password = passwordTextField?.text else { return }
+        guard let email = emailTextField?.text,
+            let password = passwordTextField?.text,
+            let viewModel = viewModel else { return }
         
-        viewModel?.signIn(email: email, password: password, completion: { [weak self] (error) in
-            if let err = error {
-                let receivedError = self?.handleError(error: err)
-                self?.errorLabel?.text = receivedError
-                self?.errorLabel?.alpha = 1
+        viewModel.signIn(email: email, password: password, completion: { [weak self] (error) in
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleError(error: error)
+                guard let errorLabel = self.errorLabel else { return }
+                errorLabel.text = receivedError
+                errorLabel.alpha = 1
             } else {
                 let recipeFeed = RecipeTableView()
                 recipeFeed.modalPresentationStyle = .fullScreen
-                self?.present(recipeFeed, animated: true, completion: nil)
+                self.present(recipeFeed, animated: true, completion: nil)
             }
         })
+    }
+    
+    @IBAction func backToSignUpButton(_ sender: Any) {
+        let signUpView = SignUpView()
+        signUpView.modalPresentationStyle = .fullScreen
+        self.present(signUpView, animated: true, completion: nil)
     }
 }
 
@@ -63,7 +95,58 @@ extension SignInView {
         case .wrongPassword:
             return ErrorView.wrongPassword
         default:
-            return ErrorView.unknownError
+            return ErrorView.unknownAuthError
         }
+    }
+}
+
+extension SignInView: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        activeTextField = textField
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let activeTextField = activeTextField else { return true }
+        activeTextField.resignFirstResponder()
+        self.activeTextField = nil
+        return true
+    }
+}
+
+extension SignInView {
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let hideKeyboard = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardFunc))
+        guard let scrollView = scrollView else { return }
+        scrollView.addGestureRecognizer(hideKeyboard)
+    }
+    
+    @objc func keyboardWillShow(notification:NSNotification) {
+        guard let info = notification.userInfo,
+            let keyboardRect: CGRect = info[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let keyboardSize = keyboardRect.size
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        guard let scrollView = scrollView else { return }
+        scrollView.contentInset = insets
+        scrollView.scrollIndicatorInsets = insets
+        guard let activeTextField = activeTextField else { return }
+        //let visible_screen_when_keyboard_appeared = self.view.bounds.height - keyboardSize.height
+        //let activeFieldFrame = scrollView?.convert(activeTextField.frame, to: nil)
+        let scrollPoint = CGPoint(x: 0, y: activeTextField.frame.origin.y - keyboardSize.height)
+        scrollView.setContentOffset(scrollPoint, animated: true)
+    }
+    
+    @objc func keyboardWillHide(notification:NSNotification) {
+        guard let scrollView = scrollView else { return }
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+    
+    @objc private func hideKeyboardFunc() {
+        guard let scrollView = scrollView else { return }
+        scrollView.endEditing(true)
     }
 }

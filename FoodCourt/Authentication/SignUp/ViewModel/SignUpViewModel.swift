@@ -19,8 +19,10 @@ class SignUpViewModel: SignUpViewModelProtocol {
     func signUp(email: String, password: String, user: User, completion: ((ErrorViewModel?) -> Void)?) {
         signUpModel.checkUsernameAndSignUp(email: email, password: password, user: user, completion: {
             [weak self] (error) in
-            if let err = error {
-                completion?(self?.handleError(error: err))
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleError(error: error)
+                completion?(receivedError)
             } else {
                 completion?(nil)
             }
@@ -52,7 +54,7 @@ extension SignUpViewModel {
         case .weakPassword:
             return ErrorViewModel.weakPassword
         default:
-            return ErrorViewModel.unknownError
+            return ErrorViewModel.unknownAuthError
         }
     }
 }

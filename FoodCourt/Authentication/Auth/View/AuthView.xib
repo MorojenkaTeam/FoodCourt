@@ -9,6 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AuthView" customModule="FoodCourt" customModuleProvider="target">
             <connections>
+                <outlet property="signInButton" destination="32l-rD-fZj" id="Nft-ex-0fN"/>
+                <outlet property="signUpButton" destination="VS8-QR-wsq" id="uc4-x0-SJM"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Lf9-iO-qFN"/>
             </connections>
         </placeholder>
@@ -18,14 +20,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="4JV-wP-rHU">
-                    <rect key="frame" x="0.0" y="339.66666666666669" width="375" height="133"/>
+                    <rect key="frame" x="62.666666666666657" y="339.66666666666669" width="249.99999999999997" height="133"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="32l-rD-fZj">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
                             <color key="backgroundColor" red="0.41034108499999999" green="0.81560948659999999" blue="0.2581255865" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="UeD-V0-byd"/>
-                                <constraint firstAttribute="width" constant="375" id="xYY-hp-390"/>
+                                <constraint firstAttribute="width" constant="250" id="ZXJ-Eo-pXL"/>
                             </constraints>
                             <state key="normal" title="Sign in">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -35,11 +37,11 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VS8-QR-wsq">
-                            <rect key="frame" x="0.0" y="83" width="375" height="50"/>
+                            <rect key="frame" x="0.0" y="83" width="250" height="50"/>
                             <color key="backgroundColor" red="0.41034108499999999" green="0.81560948659999999" blue="0.2581255865" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="C7S-BG-bQe"/>
-                                <constraint firstAttribute="width" constant="375" id="F26-iH-dEA"/>
+                                <constraint firstAttribute="width" constant="250" id="YXZ-0Y-ZQB"/>
                             </constraints>
                             <state key="normal" title="Sign up">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -57,7 +59,7 @@
                 <constraint firstItem="4JV-wP-rHU" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Pja-Dk-5pA"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="139" y="153"/>
+            <point key="canvasLocation" x="138.40000000000001" y="152.95566502463055"/>
         </view>
     </objects>
 </document>

@@ -13,21 +13,24 @@ import Firebase
 
 class SignUpModel: SignUpModelProtocol {
     private let db: Firestore
+    private let auth: Auth
     
     init() {
         db = Firestore.firestore()
+        auth = Auth.auth()
     }
     
     func checkUsernameAndSignUp(email: String, password: String, user: User, completion: ((ErrorModel?) -> Void)?) {
         guard let username = user.username else { return }
         db.collection(Collections.users).document(username).getDocument { [weak self] (document, error) in
+            guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
-                let err = self?.handleError(errorCode: errorCode)
-                completion?(err)
+                let receivedError = self.handleError(errorCode: errorCode)
+                completion?(receivedError)
             } else if let document = document, document.exists {
                 completion?(ErrorModel.usernameAlreadyInUse)
             } else {
-                self?.signUp(email: email, password: password, user: user, completion: completion)
+                self.signUp(email: email, password: password, user: user, completion: completion)
             }
         }
     }
@@ -39,12 +42,13 @@ extension SignUpModel {
             completion?(ErrorModel.nilUserData)
             return
         }
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] (result, error) in
+        self.auth.createUser(withEmail: email, password: password) { [weak self] (result, error) in
+            guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
-                let err = self?.handleError(errorCode: errorCode)
-                completion?(err)
+                let receivedError = self.handleError(errorCode: errorCode)
+                completion?(receivedError)
             } else  {
-                self?.setUserData(firstName: firstName, lastName: lastName, username: username, completion: completion)
+                self.setUserData(firstName: firstName, lastName: lastName, username: username, completion: completion)
             }
         }
     }
@@ -55,22 +59,24 @@ extension SignUpModel {
             Fields.firstName: firstName,
             Fields.lastName: lastName
         ]) { [weak self] (error) in
+            guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
-                let err = self?.handleError(errorCode: errorCode)
-                completion?(err)
+                let receivedError = self.handleError(errorCode: errorCode)
+                completion?(receivedError)
             } else {
-                self?.setUsernameAsDisplayName(username: username, completion: completion)
+                self.setUsernameAsDisplayName(username: username, completion: completion)
             }
         }
     }
     
     private func setUsernameAsDisplayName(username: String, completion: ((ErrorModel?) -> Void)?) {
-        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-        changeRequest?.displayName = username
-        changeRequest?.commitChanges { [weak self] (error) in
+        guard let changeRequest = self.auth.currentUser?.createProfileChangeRequest() else { return }
+        changeRequest.displayName = username
+        changeRequest.commitChanges { [weak self] (error) in
+            guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
-                let err = self?.handleError(errorCode: errorCode)
-                completion?(err)
+                let receivedError = self.handleError(errorCode: errorCode)
+                completion?(receivedError)
             } else {
                 completion?(nil)
             }
@@ -100,7 +106,7 @@ extension SignUpModel {
         case .weakPassword:
             return ErrorModel.weakPassword
         default:
-            return ErrorModel.unknownError
+            return ErrorModel.unknownAuthError
         }
     }
 }
