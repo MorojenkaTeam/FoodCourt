@@ -10,28 +10,145 @@ import Foundation
 import UIKit
 
 class RecipeTableView: UIViewController {
-    @IBOutlet weak var recipeTableView: UITableView?
+    @IBOutlet private weak var recipeTableView: UITableView?
+    @IBOutlet private weak var errorLabel: UILabel?
     
-    private let cellIdentifier = "RecipeTableViewCell"
     private var recipes = [Recipe]()
     private var viewModel: RecipeTableViewModel?
+    private var selectedRowIndex: Int = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         recipeTableView?.dataSource = self
         recipeTableView?.delegate = self
-        viewModel = RecipeTableViewModel()
-        recipeTableView?.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
+        guard let errorLabel = errorLabel, let recipeTableView = recipeTableView else { return }
+        errorLabel.alpha = 0
+        recipeTableView.register(UINib(nibName: TableCellConfig.cellIdentifier, bundle: nil),
+                                 forCellReuseIdentifier: TableCellConfig.cellIdentifier)
         
-        viewModel?.loadRecipes { [weak self] (recipes) in
-            guard let recipes = recipes else {
-                return
+        viewModel = RecipeTableViewModel()
+        downloadRecipeData()
+    }
+}
+
+extension RecipeTableView {
+    private func downloadRecipeData() {
+        guard let viewModel = viewModel else { return }
+        viewModel.downloadRecipes(completion: { [weak self] (recipes, error) in
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleFirestoreError(error: error)
+                self.showToast(message: receivedError)
+            } else {
+                guard let recipes = recipes else { return }
+                self.recipes = recipes
+                DispatchQueue.main.async {
+                    self.recipeTableView?.reloadData()
+                }
+                self.downloadRecipeImages()
             }
-            
-            self?.recipes = recipes
-            DispatchQueue.main.async {
-                self?.recipeTableView?.reloadData()
-            }
+        })
+    }
+    
+    private func downloadRecipeImages() {
+        guard let viewModel = viewModel else { return }
+        for (index, recipe) in recipes.enumerated() {
+            viewModel.downloadRecipeImage(id: recipe.getId(), completion: { [weak self] (data, error) in
+                guard let self = self else { return }
+                if let error = error {
+                    let receivedError = self.handleStorageError(error: error)
+                    self.showToast(message: receivedError)
+                } else {
+                    let indexPath = IndexPath(row: 0, section: index)
+                    guard let recipeTableView = self.recipeTableView, let imageData = data,
+                        let image = UIImage(data: imageData),
+                        let cell = recipeTableView.cellForRow(at: indexPath) as? RecipeTableViewCell else { return }
+                    DispatchQueue.main.async {
+                        cell.setImage(image: image)
+                    }
+                    self.recipes[index].setImage(image: image)
+                }
+            })
+        }
+    }
+    
+    private func showToast(message: String) {
+        guard let errorLabel = errorLabel else { return }
+        errorLabel.textAlignment = .center
+        errorLabel.text = message
+        errorLabel.alpha = 1.0
+        errorLabel.layer.cornerRadius = 16;
+        errorLabel.clipsToBounds  =  true
+        UIView.animate(withDuration: 4.0, delay: 4.0, options: .curveEaseOut, animations: {
+            errorLabel.alpha = 0.0
+        })
+    }
+}
+
+extension RecipeTableView {
+    private func handleFirestoreError(error: ErrorViewModel) -> String {
+        switch error {
+        case .cancelledFirestoreError:
+            return ErrorView.cancelledFirestoreError
+        case .invalidArgumentFirestoreError:
+            return ErrorView.invalidArgumentFirestoreError
+        case .deadlineExceeded:
+            return ErrorView.deadlineExceeded
+        case .notFound:
+            return ErrorView.notFound
+        case .alreadyExists:
+            return ErrorView.alreadyExists
+        case .permissionDenied:
+            return ErrorView.permissionDenied
+        case .resourceExhausted:
+            return ErrorView.resourceExhausted
+        case .failedPrecondition:
+            return ErrorView.failedPrecondition
+        case .aborted:
+            return ErrorView.aborted
+        case .outOfRange:
+            return ErrorView.outOfRange
+        case .unimplemented:
+            return ErrorView.unimplemented
+        case .`internal`:
+            return ErrorView.`internal`
+        case .unavailable:
+            return ErrorView.unavailable
+        case .dataLoss:
+            return ErrorView.dataLoss
+        case .unauthenticatedFirestoreError:
+            return ErrorView.unauthenticatedFirestoreError
+        default:
+            return ErrorView.unknownFirestoreError
+        }
+    }
+    
+    private func handleStorageError(error: ErrorViewModel) -> String {
+        switch error {
+        case .objectNotFound:
+            return ErrorView.objectNotFound
+        case .bucketNotFound:
+            return ErrorView.bucketNotFound
+        case .projectNotFound:
+            return ErrorView.projectNotFound
+        case .quotaExceeded:
+            return ErrorView.quotaExceeded
+        case .unauthenticatedStorageError:
+            return ErrorView.unauthenticatedStorageError
+        case .unauthorized:
+            return ErrorView.unauthorized
+        case .retryLimitExceeded:
+            return ErrorView.retryLimitExceeded
+        case .nonMatchingChecksum:
+            return ErrorView.nonMatchingChecksum
+        case .downloadSizeExceeded:
+            return ErrorView.downloadSizeExceeded
+        case .cancelledStorageError:
+            return ErrorView.cancelledStorageError
+        case .invalidArgumentStorageError:
+            return ErrorView.invalidArgumentStorageError
+        default:
+            return ErrorView.unknownStorageError
         }
     }
 }
@@ -42,7 +159,7 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? RecipeTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableCellConfig.cellIdentifier, for: indexPath) as? RecipeTableViewCell else {
             let cell = RecipeTableViewCell()
             return cell
         }
@@ -51,11 +168,18 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
         cell.layer.masksToBounds = true
         let recipe = recipes[indexPath.section]
         cell.configure(with: recipe)
+        if let image = recipe.getImage() {
+            cell.setImage(image: image)
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return TableCellConfig.height
+        if selectedRowIndex == indexPath.section {
+            return 500
+        } else {
+            return TableCellConfig.height
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -70,5 +194,15 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
         let headerView = UIView()
         headerView.backgroundColor = UIColor.clear
         return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.beginUpdates()
+        if selectedRowIndex == indexPath.section {
+            selectedRowIndex = -1
+        } else {
+            selectedRowIndex = indexPath.section
+        }
+        tableView.endUpdates()
     }
 }
