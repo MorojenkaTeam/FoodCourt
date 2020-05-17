@@ -19,9 +19,9 @@ class RecipeTableView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        recipeTableView?.dataSource = self
-        recipeTableView?.delegate = self
         guard let errorLabel = errorLabel, let recipeTableView = recipeTableView else { return }
+        recipeTableView.dataSource = self
+        recipeTableView.delegate = self
         errorLabel.alpha = 0
         recipeTableView.register(UINib(nibName: TableCellConfig.cellIdentifier, bundle: nil),
                                  forCellReuseIdentifier: TableCellConfig.cellIdentifier)
@@ -43,7 +43,8 @@ extension RecipeTableView {
                 guard let recipes = recipes else { return }
                 self.recipes = recipes
                 DispatchQueue.main.async {
-                    self.recipeTableView?.reloadData()
+                    guard let recipeTableView = self.recipeTableView else { return }
+                    recipeTableView.reloadData()
                 }
                 self.downloadRecipeImages()
             }
@@ -159,7 +160,8 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableCellConfig.cellIdentifier, for: indexPath) as? RecipeTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableCellConfig.cellIdentifier,
+                                                       for: indexPath) as? RecipeTableViewCell else {
             let cell = RecipeTableViewCell()
             return cell
         }
