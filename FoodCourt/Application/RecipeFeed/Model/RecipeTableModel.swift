@@ -72,6 +72,7 @@ extension RecipeTableModel {
                         break
                     }
                 }
+                //print(ingredientsMap.count)
                 if ingredients.count == ingredientsMap.count {
                     let recipeId = document.documentID
                     let recipe = Recipe(id: recipeId, authorId: recipeAuthorId, name: recipeName, description: recipeDescription, rating: recipeRating, ingredients: ingredients)

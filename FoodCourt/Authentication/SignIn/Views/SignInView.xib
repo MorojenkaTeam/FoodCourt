@@ -50,6 +50,10 @@
                                             <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                                         </textField>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="225" id="YYc-ha-Kbn"/>
+                                        <constraint firstAttribute="height" constant="109" id="wFB-4W-yIE"/>
+                                    </constraints>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TY4-az-34V">
                                     <rect key="frame" x="16" y="559" width="343" height="80"/>
@@ -93,12 +97,12 @@
                             <constraints>
                                 <constraint firstItem="Ey3-du-Bza" firstAttribute="top" secondItem="eHe-rY-nnn" secondAttribute="top" constant="305" id="1vx-53-xv6"/>
                                 <constraint firstItem="S5X-qy-Pky" firstAttribute="top" secondItem="TY4-az-34V" secondAttribute="bottom" constant="20" id="32n-id-gJL"/>
+                                <constraint firstItem="Ey3-du-Bza" firstAttribute="centerX" secondItem="TY4-az-34V" secondAttribute="centerX" id="42j-PW-xMV"/>
                                 <constraint firstItem="d9X-Zk-nea" firstAttribute="top" secondItem="S5X-qy-Pky" secondAttribute="bottom" constant="20" id="HD8-uh-Gt5"/>
                                 <constraint firstItem="S5X-qy-Pky" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="I8H-yG-LQ8"/>
                                 <constraint firstItem="TY4-az-34V" firstAttribute="top" secondItem="Ey3-du-Bza" secondAttribute="bottom" constant="145" id="LNw-NM-t55"/>
                                 <constraint firstItem="TY4-az-34V" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="QW1-Bh-95q"/>
                                 <constraint firstItem="d9X-Zk-nea" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="ep6-kA-EBD"/>
-                                <constraint firstItem="Ey3-du-Bza" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="i8v-rf-eIS"/>
                             </constraints>
                         </view>
                     </subviews>

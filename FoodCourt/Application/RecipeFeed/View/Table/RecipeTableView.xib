@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecipeTableView" customModule="FoodCourt" customModuleProvider="target">
             <connections>
-                <outlet property="errorLabel" destination="SM8-65-A78" id="izo-zG-xQL"/>
+                <outlet property="errorLabel" destination="hMj-1W-wbA" id="Gm1-8C-b4L"/>
                 <outlet property="recipeTableView" destination="V3b-Vl-FCl" id="JsT-fs-LD3"/>
                 <outlet property="view" destination="iN0-l3-epB" id="9nU-5V-fdM"/>
             </connections>
@@ -27,12 +27,12 @@
                         <outlet property="delegate" destination="-1" id="bcH-wN-GsW"/>
                     </connections>
                 </tableView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SM8-65-A78">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMj-1W-wbA">
                     <rect key="frame" x="20" y="782" width="374" height="80"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="80" id="0q0-B4-J6n"/>
-                        <constraint firstAttribute="width" constant="374" id="Ipj-TT-L0B"/>
+                        <constraint firstAttribute="height" constant="80" id="XPL-ng-Pgg"/>
+                        <constraint firstAttribute="width" constant="374" id="f1U-C3-kdt"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -41,15 +41,15 @@
             </subviews>
             <color key="backgroundColor" red="0.90479570629999995" green="0.7779183569" blue="0.73411266040000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
-                <constraint firstItem="SM8-65-A78" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3uc-4t-nA6"/>
                 <constraint firstItem="V3b-Vl-FCl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BDJ-xD-0M2"/>
                 <constraint firstAttribute="bottom" secondItem="V3b-Vl-FCl" secondAttribute="bottom" id="Wmj-sA-1lG"/>
+                <constraint firstItem="hMj-1W-wbA" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="Wv1-D8-jfA"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="V3b-Vl-FCl" secondAttribute="trailing" constant="20" id="XK2-UU-vks"/>
-                <constraint firstItem="SM8-65-A78" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="ZWW-AX-vE0"/>
+                <constraint firstItem="hMj-1W-wbA" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bGM-Tw-Q7l"/>
                 <constraint firstItem="V3b-Vl-FCl" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="cAa-3X-nXK"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="444.92753623188412" y="150.66964285714286"/>
+            <point key="canvasLocation" x="-7.2463768115942031" y="160.04464285714286"/>
         </view>
     </objects>
 </document>

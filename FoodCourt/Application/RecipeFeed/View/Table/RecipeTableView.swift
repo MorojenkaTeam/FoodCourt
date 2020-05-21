@@ -15,17 +15,24 @@ class RecipeTableView: UIViewController {
     
     private var recipes = [Recipe]()
     private var viewModel: RecipeTableViewModel?
-    private var selectedRowIndex: Int = -1
+    //private var selectedRowIndex: Int = -1
+    private var rowsStates = [Bool]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let errorLabel = errorLabel, let recipeTableView = recipeTableView else { return }
+        configure()
+    }
+    
+    private func configure() {
+        //recipeTableView?.estimatedRowHeight = 100
+        //recipeTableView?.rowHeight = UITableView.automaticDimension
+        guard let errorLabel = errorLabel, let recipeTableView = recipeTableView
+            else { return }
         recipeTableView.dataSource = self
         recipeTableView.delegate = self
-        errorLabel.alpha = 0
         recipeTableView.register(UINib(nibName: TableCellConfig.cellIdentifier, bundle: nil),
                                  forCellReuseIdentifier: TableCellConfig.cellIdentifier)
-        
+        errorLabel.alpha = 0
         viewModel = RecipeTableViewModel()
         downloadRecipeData()
     }
@@ -43,6 +50,7 @@ extension RecipeTableView {
                 guard let recipes = recipes else { return }
                 self.recipes = recipes
                 DispatchQueue.main.async {
+                    self.rowsStates = Array(repeating: false, count: recipes.count)
                     guard let recipeTableView = self.recipeTableView else { return }
                     recipeTableView.reloadData()
                 }
@@ -161,11 +169,11 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableCellConfig.cellIdentifier,
-                                                       for: indexPath) as? RecipeTableViewCell else {
-            let cell = RecipeTableViewCell()
-            return cell
+                                                       for: indexPath) as? RecipeTableViewCell
+            else {
+                let cell = RecipeTableViewCell()
+                return cell
         }
-        
         cell.layer.cornerRadius = 16
         cell.layer.masksToBounds = true
         let recipe = recipes[indexPath.section]
@@ -173,16 +181,31 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
         if let image = recipe.getImage() {
             cell.setImage(image: image)
         }
+        cell.setIsExpanded(isExpanded: rowsStates[indexPath.section])
+        cell.selectionStyle = .none
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if selectedRowIndex == indexPath.section {
-            return 500
+    /*func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let cell = tableView.cellForRow(at: indexPath) as? RecipeTableViewCell
+            else { return 10.0 }
+        //print("here")
+        if cell.getIsExpanded() {
+            return cell.getExpandedBorder()
         } else {
-            return TableCellConfig.height
+            return cell.getCollapsedBorder()
         }
-    }
+        
+        
+        //return UITableView.automaticDimension
+        
+        //return 150
+        /*if selectedRowIndex == indexPath.section {
+         return 150
+         } else {
+         return TableCellConfig.height
+         }*/
+    }*/
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return recipes.count
@@ -199,12 +222,19 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.beginUpdates()
-        if selectedRowIndex == indexPath.section {
-            selectedRowIndex = -1
-        } else {
-            selectedRowIndex = indexPath.section
-        }
-        tableView.endUpdates()
+        /*tableView.beginUpdates()
+         if selectedRowIndex == indexPath.section {
+         selectedRowIndex = -1
+         } else {
+         selectedRowIndex = indexPath.section
+         }
+         tableView.endUpdates()*/
+        
+        guard let cell = tableView.cellForRow(at: indexPath) as? RecipeTableViewCell
+            else { return }
+        rowsStates[indexPath.section].toggle()
+        tableView.performBatchUpdates({
+            cell.setIsExpanded(isExpanded: rowsStates[indexPath.section])
+        }, completion: nil)
     }
 }
