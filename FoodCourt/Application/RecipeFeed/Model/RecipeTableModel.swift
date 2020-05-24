@@ -12,10 +12,12 @@ import Firebase
 class RecipeTableModel: RecipeTableModelProtocol {
     private let db: Firestore?
     private let storage: StorageReference?
+    private let auth: Auth
     
     init() {
         db = Firestore.firestore()
         storage = Storage.storage().reference()
+        auth = Auth.auth()
     }
     
     func downloadRecipes(completion: (([Recipe]?, ErrorModel?) -> Void)?) {
@@ -34,6 +36,27 @@ class RecipeTableModel: RecipeTableModelProtocol {
         }
     }
     
+    func downloadFavorites(completion: (([String]?, ErrorModel?) -> Void)?) {
+        guard let user = auth.currentUser, let username = user.displayName, let db = db else { return }
+        db.collection(Collections.users).document(username).getDocument { [weak self] (document, error) in
+            guard let self = self else { return }
+            if let error = error, let errorCode = FirestoreErrorCode(rawValue: error._code) {
+                let receivedError = self.handleFirestoreError(errorCode: errorCode)
+                completion?(nil, receivedError)
+            } else {
+                if let document = document, document.exists {
+                    if let userData = document.data(), let favorites = userData[Fields.favorites] as? [String] {
+                        completion?(favorites, nil)
+                    } else {
+                        completion?(nil, ErrorModel.notFound)
+                    }
+                } else {
+                    completion?(nil, ErrorModel.notFound)
+                }
+            }
+        }
+    }
+    
     func downloadRecipeImage(id: String, completion: ((Data?, ErrorModel?) -> Void)?) {
         guard let storage = storage else { return }
         let imageRef = storage.child(Collections.recipes + "/" + id + ".jpg")
@@ -47,6 +70,36 @@ class RecipeTableModel: RecipeTableModelProtocol {
                 completion?(data, nil)
             }
         })
+    }
+    
+    func uploadFavoritesChanges(id: String, changeFlag: Bool, completion: ((ErrorModel?) -> Void)?) {
+        guard let user = auth.currentUser, let username = user.displayName, let db = db else { return }
+        let userRef = db.collection(Collections.users).document(username)
+        if changeFlag {
+            userRef.updateData([
+                Fields.favorites: FieldValue.arrayUnion([id])
+            ]) { [weak self] (error) in
+                guard let self = self else { return }
+                if let error = error, let errorCode = FirestoreErrorCode(rawValue: error._code) {
+                    let receivedError = self.handleFirestoreError(errorCode: errorCode)
+                    completion?(receivedError)
+                } else {
+                    completion?(nil)
+                }
+            }
+        } else {
+            userRef.updateData([
+                Fields.favorites: FieldValue.arrayRemove([id])
+            ]) { [weak self] (error) in
+                guard let self = self else { return }
+                if let error = error, let errorCode = FirestoreErrorCode(rawValue: error._code) {
+                    let receivedError = self.handleFirestoreError(errorCode: errorCode)
+                    completion?(receivedError)
+                } else {
+                    completion?(nil)
+                }
+            }
+        }
     }
 }
 

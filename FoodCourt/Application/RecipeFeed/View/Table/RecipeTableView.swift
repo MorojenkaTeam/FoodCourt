@@ -11,12 +11,13 @@ import UIKit
 
 class RecipeTableView: UIViewController {
     @IBOutlet private weak var recipeTableView: UITableView?
+    @IBOutlet private weak var recipeSearch: UIImageView?
     @IBOutlet private weak var errorLabel: UILabel?
     
     private var recipes = [Recipe]()
     private var viewModel: RecipeTableViewModel?
-    //private var selectedRowIndex: Int = -1
     private var rowsStates = [Bool]()
+    private var favorites = Set<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,15 +27,26 @@ class RecipeTableView: UIViewController {
     private func configure() {
         //recipeTableView?.estimatedRowHeight = 100
         //recipeTableView?.rowHeight = UITableView.automaticDimension
-        guard let errorLabel = errorLabel, let recipeTableView = recipeTableView
+        guard let errorLabel = errorLabel, let recipeTableView = recipeTableView, let recipeSearch = recipeSearch
             else { return }
         recipeTableView.dataSource = self
         recipeTableView.delegate = self
         recipeTableView.register(UINib(nibName: TableCellConfig.cellIdentifier, bundle: nil),
                                  forCellReuseIdentifier: TableCellConfig.cellIdentifier)
+        
+        recipeSearch.image = UIImage(systemName: "magnifyingglass")
+        let clicked = UITapGestureRecognizer(target: self, action: #selector(searchClicked))
+        recipeSearch.isUserInteractionEnabled = true
+        recipeSearch.addGestureRecognizer(clicked)
+        recipeSearch.tintColor = .black
         errorLabel.alpha = 0
+        
         viewModel = RecipeTableViewModel()
         downloadRecipeData()
+    }
+    
+    @objc func searchClicked() {
+        print("search clicked")
     }
 }
 
@@ -54,11 +66,39 @@ extension RecipeTableView {
                     guard let recipeTableView = self.recipeTableView else { return }
                     recipeTableView.reloadData()
                 }
-                self.downloadRecipeImages()
+                self.doanloadFavorites()
             }
         })
     }
     
+    private func doanloadFavorites() {
+        guard let viewModel = viewModel else { return }
+        viewModel.downloadFavorites(completion: { [weak self] (favorites, error) in
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleFirestoreError(error: error)
+                self.showToast(message: receivedError)
+            } else {
+                guard let favorites = favorites else { return }
+                self.favorites = Set(favorites.map { $0 })
+                
+                    guard let recipeTableView = self.recipeTableView else { return }
+                    for (index, recipe) in self.recipes.enumerated() {
+                        if self.favorites.contains(recipe.getId()) {
+                            let indexPath = IndexPath(row: 0, section: index)
+                            guard let cell = recipeTableView.cellForRow(at: indexPath) as? RecipeTableViewCell
+                                else { return }
+                            cell.setIsFavorite(true)
+                            DispatchQueue.main.async {
+                                cell.setAsFavorite()
+                            }
+                        }
+                    }
+                self.downloadRecipeImages()
+            }
+        })
+    }
+ 
     private func downloadRecipeImages() {
         guard let viewModel = viewModel else { return }
         for (index, recipe) in recipes.enumerated() {
@@ -79,6 +119,23 @@ extension RecipeTableView {
                 }
             })
         }
+    }
+    
+    func uploadFavoritesChanges(recipeId: String, changeFlag: Bool) {
+        guard let viewModel = viewModel else { return }
+        viewModel.uploadFavoritesChanges(id: recipeId, changeFlag: changeFlag, completion: { [weak self] (error) in
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleFirestoreError(error: error)
+                self.showToast(message: receivedError)
+            } else {
+                if changeFlag {
+                    self.favorites.insert(recipeId)
+                } else {
+                    self.favorites.remove(recipeId)
+                }
+            }
+        })
     }
     
     private func showToast(message: String) {
@@ -177,12 +234,13 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
         cell.layer.cornerRadius = 16
         cell.layer.masksToBounds = true
         let recipe = recipes[indexPath.section]
-        cell.configure(with: recipe)
+        cell.configure(with: recipe, tableController: self)
         if let image = recipe.getImage() {
             cell.setImage(image: image)
         }
-        cell.setIsExpanded(isExpanded: rowsStates[indexPath.section])
-        cell.selectionStyle = .none
+        favorites.contains(recipe.getId()) ? cell.setAsFavorite() : cell.setAsNotFavorite()
+        cell.setIsExpanded(rowsStates[indexPath.section])
+        //cell.selectionStyle = .none
         return cell
     }
     
@@ -229,12 +287,13 @@ extension RecipeTableView: UITableViewDataSource, UITableViewDelegate {
          selectedRowIndex = indexPath.section
          }
          tableView.endUpdates()*/
+        //print("kek")
         
         guard let cell = tableView.cellForRow(at: indexPath) as? RecipeTableViewCell
             else { return }
         rowsStates[indexPath.section].toggle()
         tableView.performBatchUpdates({
-            cell.setIsExpanded(isExpanded: rowsStates[indexPath.section])
+            cell.setIsExpanded(rowsStates[indexPath.section])
         }, completion: nil)
     }
 }

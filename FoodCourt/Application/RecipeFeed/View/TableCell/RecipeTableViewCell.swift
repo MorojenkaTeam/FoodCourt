@@ -10,19 +10,30 @@ import Foundation
 import UIKit
 import Kingfisher
 import Cosmos
-//import FirebaseUI
 
 class RecipeTableViewCell: UITableViewCell {
-    
     @IBOutlet private weak var recipeNameLabel: UILabel?
     @IBOutlet private weak var recipeDescriptionLabel: UILabel?
     @IBOutlet private weak var recipeImageView: UIImageView?
     @IBOutlet private weak var ingredientsStackView: UIStackView?
     @IBOutlet private weak var recipeCosmosView: CosmosView?
+    @IBOutlet private weak var bookmarkImageView: UIImageView?
     
-    @IBOutlet weak var collapsedConstraint: NSLayoutConstraint?
-    @IBOutlet weak var expandedConstraint: NSLayoutConstraint?
+    @IBOutlet private weak var collapsedConstraint: NSLayoutConstraint?
+    @IBOutlet private weak var expandedConstraint: NSLayoutConstraint?
     
+    private var recipeId: String?
+    private var tableController: RecipeTableView?
+    private var isFavorite: Bool = false {
+        didSet {
+            let bookMarkName: String = isFavorite ? "bookmark.fill" : "bookmark"
+            guard let bookmarkImageView = bookmarkImageView else { return }
+            DispatchQueue.main.async {
+                bookmarkImageView.image = UIImage(systemName: bookMarkName)
+                bookmarkImageView.tintColor = .orange
+            }
+        }
+    }
     private var isExpanded: Bool = false {
         didSet {
             guard let collapsedConstraint = collapsedConstraint, let expandedConstraint = expandedConstraint
@@ -47,20 +58,24 @@ class RecipeTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        guard let recipeNameLabel = recipeNameLabel, let recipeDescriptionLabel = recipeDescriptionLabel,
+        guard /*let recipeNameLabel = recipeNameLabel, let recipeDescriptionLabel = recipeDescriptionLabel,*/
             let recipeImageView = recipeImageView, let ingredientsStackView = ingredientsStackView
             else { return }
-        recipeNameLabel.text = nil
-        recipeDescriptionLabel.text = nil
+        //recipeNameLabel.text = nil
+        //recipeDescriptionLabel.text = nil
         recipeImageView.image = nil
         ingredientsStackView.clean()
+        //bookmarkImageView = nil
+        recipeId = nil
     }
     
-    func configure(with recipe: Recipe) {
+    func configure(with recipe: Recipe, tableController: RecipeTableView) {
+        self.tableController = tableController
         guard let recipeNameLabel = recipeNameLabel, let recipeDescriptionLabel = recipeDescriptionLabel,
             let recipeImageView = recipeImageView, let recipeCosmosView = recipeCosmosView,
-            let ingredientsStackView = ingredientsStackView
+            let ingredientsStackView = ingredientsStackView, let bookmarkImageView = bookmarkImageView
             else { return }
+        recipeId = recipe.getId()
         recipeNameLabel.text = recipe.getName()
         recipeDescriptionLabel.text = recipe.getDescription()
         //let imageUrl = URL(string: recipe.imageData)
@@ -71,28 +86,39 @@ class RecipeTableViewCell: UITableViewCell {
         recipeCosmosView.settings.fillMode = .precise
         recipeCosmosView.rating = recipe.getRating()
         recipeCosmosView.isUserInteractionEnabled = false
+        
         let ingredients = recipe.getIngredients()
         for ingredient in ingredients {
             let textLabel = UILabel()
             textLabel.backgroundColor = UIColor.yellow
             textLabel.widthAnchor.constraint(equalToConstant: ingredientsStackView.frame.width).isActive = true
             textLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-            textLabel.text  = ingredient.getName() + " " + String(ingredient.getAmount()) + " " + ingredient.getMeasure()
+            textLabel.text = ingredient.getName() + " " + String(ingredient.getAmount()) + " " + ingredient.getMeasure()
             textLabel.textAlignment = .left
+            textLabel.numberOfLines = 0
+            textLabel.lineBreakMode = .byWordWrapping
             ingredientsStackView.addArrangedSubview(textLabel)
         }
         ingredientsStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        //collapsedBorder = recipeNameLabel.frame.maxY
-        
-        
-        /*ingredientsStackView.getMaxYRegardingSuperview(completion: { [weak self] (maxY) in
-            guard let self = self, let maxY = maxY else { return }
-            self.expandedBorder = maxY
-            print(maxY)
-        })*/
-        
-        //expandedBorder = ingredientsStackView.getMaxYRegardingSuperview()
+        let clicked = UITapGestureRecognizer(target: self, action: #selector(bookmarkClicked))
+        bookmarkImageView.isUserInteractionEnabled = true
+        bookmarkImageView.addGestureRecognizer(clicked)
+        bookmarkImageView.tintColor = UIColor.orange
+    }
+    
+    @objc func bookmarkClicked() {
+        guard let recipeId = recipeId else { return }
+        isFavorite.toggle()
+        tableController?.uploadFavoritesChanges(recipeId: recipeId, changeFlag: isFavorite)
+    }
+    
+    func setAsFavorite() {
+        isFavorite = true
+    }
+    
+    func setAsNotFavorite() {
+        isFavorite = false
     }
     
     func setImage(image: UIImage) {
@@ -102,8 +128,12 @@ class RecipeTableViewCell: UITableViewCell {
 }
 
 extension RecipeTableViewCell {
-    func setIsExpanded(isExpanded: Bool) { self.isExpanded = isExpanded }
+    func setIsExpanded(_ isExpanded: Bool) { self.isExpanded = isExpanded }
     func getIsExpanded() -> Bool { return isExpanded }
+    func setIsFavorite(_ isFavorite: Bool) { self.isFavorite = isFavorite }
+    func getIsFavorite() -> Bool { return isFavorite }
+    
+    
     //func getCollapsedBorder() -> CGFloat { return collapsedBorder }
     //func getExpandedBorder() -> CGFloat { return expandedBorder }
     

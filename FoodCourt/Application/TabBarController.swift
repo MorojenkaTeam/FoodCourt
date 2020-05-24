@@ -30,9 +30,9 @@ class TabBarController: UITabBarController/*, UITabBarDelegate*/ {
        /* profile.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 3)
         profile.tabBarItem.title = "Profile" */
         
-        favorites.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(named: "heart-7.png"), tag: 0)
-        recipeFeed.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(named: "pizza.png"), tag: 1)
-        profile.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "smiley-smile.png"), tag: 2)
+        favorites.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "bookmark.fill"), tag: 0)
+        recipeFeed.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "book.fill"), tag: 1)
+        profile.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
         
         self.viewControllers = [favorites, recipeFeed, profile]
         self.selectedIndex = 1

@@ -28,6 +28,19 @@ class RecipeTableViewModel: RecipeTableViewModelProtocol {
         })
     }
     
+    func downloadFavorites(completion: (([String]?, ErrorViewModel?) -> Void)?) {
+        guard let tableModel = tableModel else { return }
+        tableModel.downloadFavorites(completion: { [weak self] (favorites, error) in
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleFirestoreError(error: error)
+                completion?(nil, receivedError)
+            } else {
+                completion?(favorites, nil)
+            }
+        })
+    }
+    
     func downloadRecipeImage(id: String, completion: ((Data?, ErrorViewModel?) -> Void)?) {
         guard let tableModel = tableModel else { return }
         tableModel.downloadRecipeImage(id: id, completion: { [weak self] (data, error) in
@@ -37,6 +50,19 @@ class RecipeTableViewModel: RecipeTableViewModelProtocol {
                 completion?(nil, receivedError)
             } else {
                 completion?(data, nil)
+            }
+        })
+    }
+    
+    func uploadFavoritesChanges(id: String, changeFlag: Bool, completion: ((ErrorViewModel?) -> Void)?) {
+        guard let tableModel = tableModel else { return }
+        tableModel.uploadFavoritesChanges(id: id, changeFlag: changeFlag, completion: { [weak self] (error) in
+            guard let self = self else { return }
+            if let error = error {
+                let receivedError = self.handleFirestoreError(error: error)
+                completion?(receivedError)
+            } else {
+                completion?(nil)
             }
         })
     }

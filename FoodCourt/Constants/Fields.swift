@@ -12,6 +12,7 @@ struct Fields {
     //user
     public static let firstName: String = "firstName"
     public static let lastName: String = "lastName"
+    public static let favorites: String = "favorites"
     
     //recipe
     public static let recipeId: String = "id"

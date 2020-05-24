@@ -13,9 +13,7 @@
 		5001E58E2448D57300A2EAA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5001E58D2448D57300A2EAA1 /* Assets.xcassets */; };
 		5001E5912448D57300A2EAA1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5001E58F2448D57300A2EAA1 /* LaunchScreen.storyboard */; };
 		5001E5992448D5CB00A2EAA1 /* RecipeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001E5982448D5CB00A2EAA1 /* RecipeTableView.swift */; };
-		5001E59B2448D6B000A2EAA1 /* RecipeTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5001E59A2448D6B000A2EAA1 /* RecipeTableView.xib */; };
 		5001E59D2448DAF200A2EAA1 /* RecipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001E59C2448DAF200A2EAA1 /* RecipeTableViewCell.swift */; };
-		5001E59F2448DBCB00A2EAA1 /* RecipeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5001E59E2448DBCB00A2EAA1 /* RecipeTableViewCell.xib */; };
 		5001E5A12448E1BD00A2EAA1 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001E5A02448E1BD00A2EAA1 /* Recipe.swift */; };
 		5007F552245AE17F00C40956 /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5007F551245AE17F00C40956 /* AppErrors.swift */; };
 		5007F554245AE63F00C40956 /* SignUpViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5007F553245AE63F00C40956 /* SignUpViewModelProtocol.swift */; };
@@ -49,6 +47,8 @@
 		5083249D2459FA1A0021D804 /* SignInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5083249C2459FA1A0021D804 /* SignInModel.swift */; };
 		50935CE02472DE1B00558DA8 /* FavoritesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50935CDF2472DE1B00558DA8 /* FavoritesView.xib */; };
 		50935CE22472E0EA00558DA8 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50935CE12472E0EA00558DA8 /* ProfileView.xib */; };
+		50935CE3247853B200558DA8 /* RecipeTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5001E59A2448D6B000A2EAA1 /* RecipeTableView.xib */; };
+		50BB96632479AB17000A6212 /* RecipeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50BB96622479AB17000A6212 /* RecipeTableViewCell.xib */; };
 		50F478CD246DA6E600E7553B /* TabBarController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50F478CC246DA6E600E7553B /* TabBarController.storyboard */; };
 		50F478D3246DDB1200E7553B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F478D2246DDB1200E7553B /* TabBarController.swift */; };
 		50F478DB246ED2DE00E7553B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F478DA246ED2DE00E7553B /* ProfileView.swift */; };
@@ -66,7 +66,6 @@
 		5001E5982448D5CB00A2EAA1 /* RecipeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableView.swift; sourceTree = "<group>"; };
 		5001E59A2448D6B000A2EAA1 /* RecipeTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeTableView.xib; sourceTree = "<group>"; };
 		5001E59C2448DAF200A2EAA1 /* RecipeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewCell.swift; sourceTree = "<group>"; };
-		5001E59E2448DBCB00A2EAA1 /* RecipeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeTableViewCell.xib; sourceTree = "<group>"; };
 		5001E5A02448E1BD00A2EAA1 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		5007F551245AE17F00C40956 /* AppErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrors.swift; sourceTree = "<group>"; };
 		5007F553245AE63F00C40956 /* SignUpViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -102,6 +101,7 @@
 		50862FFA2455F312003AC88E /* FoodCourtLocalDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FoodCourtLocalDB.framework; path = FoodCourtLocalDB/FoodCourtLocalDB.framework; sourceTree = "<group>"; };
 		50935CDF2472DE1B00558DA8 /* FavoritesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoritesView.xib; sourceTree = "<group>"; };
 		50935CE12472E0EA00558DA8 /* ProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileView.xib; sourceTree = "<group>"; };
+		50BB96622479AB17000A6212 /* RecipeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeTableViewCell.xib; sourceTree = "<group>"; };
 		50F478CC246DA6E600E7553B /* TabBarController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarController.storyboard; sourceTree = "<group>"; };
 		50F478D2246DDB1200E7553B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = ../TabBarController.swift; sourceTree = "<group>"; };
 		50F478DA246ED2DE00E7553B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -266,7 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				5001E59C2448DAF200A2EAA1 /* RecipeTableViewCell.swift */,
-				5001E59E2448DBCB00A2EAA1 /* RecipeTableViewCell.xib */,
+				50BB96622479AB17000A6212 /* RecipeTableViewCell.xib */,
 			);
 			path = TableCell;
 			sourceTree = "<group>";
@@ -512,6 +512,7 @@
 				50935CE02472DE1B00558DA8 /* FavoritesView.xib in Resources */,
 				5001E5912448D57300A2EAA1 /* LaunchScreen.storyboard in Resources */,
 				5001E58E2448D57300A2EAA1 /* Assets.xcassets in Resources */,
+				50BB96632479AB17000A6212 /* RecipeTableViewCell.xib in Resources */,
 				504DB886245DCAB30052F78E /* GoogleService-Info.plist in Resources */,
 				504DB881245DBF130052F78E /* AuthView.xib in Resources */,
 				508324992459F9DE0021D804 /* SignUpView.xib in Resources */,
@@ -519,8 +520,7 @@
 				5001E58C2448D57200A2EAA1 /* Main.storyboard in Resources */,
 				50935CE22472E0EA00558DA8 /* ProfileView.xib in Resources */,
 				50F478CD246DA6E600E7553B /* TabBarController.storyboard in Resources */,
-				5001E59F2448DBCB00A2EAA1 /* RecipeTableViewCell.xib in Resources */,
-				5001E59B2448D6B000A2EAA1 /* RecipeTableView.xib in Resources */,
+				50935CE3247853B200558DA8 /* RecipeTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
