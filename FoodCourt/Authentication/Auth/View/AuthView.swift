@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 class AuthView: UIViewController {
-    @IBOutlet weak var signInButton: UIButton?
-    @IBOutlet weak var signUpButton: UIButton?
+    @IBOutlet private weak var signInButton: UIButton?
+    @IBOutlet private weak var signUpButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()

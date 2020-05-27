@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 public struct TableCellConfig {
+    public static let cellIdentifier = "RecipeTableViewCell"
     public static let numberOfRowsInSection: Int = 1
     public static let height: CGFloat = 300
     public static let spaceBetweenCells: CGFloat = 30

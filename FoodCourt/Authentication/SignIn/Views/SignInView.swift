@@ -9,11 +9,11 @@
 import UIKit
 
 class SignInView: UIViewController {
-    @IBOutlet weak var emailTextField: UITextField?
-    @IBOutlet weak var passwordTextField: UITextField?
-    @IBOutlet weak var errorLabel: UILabel?
-    @IBOutlet weak var signInButton: UIButton?
-    @IBOutlet weak var scrollView: UIScrollView?
+    @IBOutlet private weak var emailTextField: UITextField?
+    @IBOutlet private weak var passwordTextField: UITextField?
+    @IBOutlet private weak var errorLabel: UILabel?
+    @IBOutlet private weak var signInButton: UIButton?
+    @IBOutlet private weak var scrollView: UIScrollView?
     
     private var activeTextField: UITextField?
     private var viewModel: SignInViewModel?
@@ -32,7 +32,7 @@ class SignInView: UIViewController {
         guard let passwordTextField = passwordTextField else { return }
         passwordTextField.delegate = self
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotifications()
@@ -57,9 +57,18 @@ class SignInView: UIViewController {
                 errorLabel.text = receivedError
                 errorLabel.alpha = 1
             } else {
-                let recipeFeed = RecipeTableView()
+                /*let recipeFeed = RecipeTableView()
                 recipeFeed.modalPresentationStyle = .fullScreen
-                self.present(recipeFeed, animated: true, completion: nil)
+                self.present(recipeFeed, animated: true, completion: nil)*/
+                
+                /*let tabBar = TabBarController()
+                tabBar.modalPresentationStyle = .fullScreen
+                self.present(tabBar, animated: true, completion: nil)*/
+                
+                let tabBarStoryboard = UIStoryboard(name: "TabBarController", bundle: nil)
+                let vc = tabBarStoryboard.instantiateViewController(identifier: "TabBarController")
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)
             }
         })
     }
