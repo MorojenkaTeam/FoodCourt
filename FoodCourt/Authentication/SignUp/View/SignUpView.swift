@@ -67,8 +67,8 @@ class SignUpView: UIViewController {
     
     @IBAction private func signUpButton(_ sender: Any) {
         guard let firstName = firstNameTextField?.text, let lastName = lastNameTextField?.text,
-        let username = usernameTextField?.text, let email = emailTextField?.text,
-        let password = passwordTextField?.text, let repeatedPassword = repeatedPasswordTextField?.text else { return }
+            let username = usernameTextField?.text, let email = emailTextField?.text,
+            let password = passwordTextField?.text, let repeatedPassword = repeatedPasswordTextField?.text else { return }
         let checked = checkDataAndGetUser(firstName: firstName, lastName: lastName, username: username, email: email, password: password, repeatedPassword: repeatedPassword)
         if checked.1 != nil {
             guard let errorLabel = errorLabel else { return }

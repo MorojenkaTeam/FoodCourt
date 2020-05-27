@@ -36,7 +36,7 @@ class RecipeTableModel: RecipeTableModelProtocol {
         }
     }
     
-    func downloadFavorites(completion: (([String]?, ErrorModel?) -> Void)?) {
+    /*func downloadFavorites(completion: (([String]?, ErrorModel?) -> Void)?) {
         guard let user = auth.currentUser, let username = user.displayName, let db = db else { return }
         db.collection(Collections.users).document(username).getDocument { [weak self] (document, error) in
             guard let self = self else { return }
@@ -55,7 +55,7 @@ class RecipeTableModel: RecipeTableModelProtocol {
                 }
             }
         }
-    }
+    }*/
     
     func downloadRecipeImage(id: String, completion: ((Data?, ErrorModel?) -> Void)?) {
         guard let storage = storage else { return }
@@ -74,10 +74,10 @@ class RecipeTableModel: RecipeTableModelProtocol {
     
     func uploadFavoritesChanges(id: String, changeFlag: Bool, completion: ((ErrorModel?) -> Void)?) {
         guard let user = auth.currentUser, let username = user.displayName, let db = db else { return }
-        let userRef = db.collection(Collections.users).document(username)
+        let recipeRef = db.collection(Collections.recipes).document(id)
         if changeFlag {
-            userRef.updateData([
-                Fields.favorites: FieldValue.arrayUnion([id])
+            recipeRef.updateData([
+                Fields.whoseFavorites: FieldValue.arrayUnion([username])
             ]) { [weak self] (error) in
                 guard let self = self else { return }
                 if let error = error, let errorCode = FirestoreErrorCode(rawValue: error._code) {
@@ -88,8 +88,8 @@ class RecipeTableModel: RecipeTableModelProtocol {
                 }
             }
         } else {
-            userRef.updateData([
-                Fields.favorites: FieldValue.arrayRemove([id])
+            recipeRef.updateData([
+                Fields.whoseFavorites: FieldValue.arrayRemove([username])
             ]) { [weak self] (error) in
                 guard let self = self else { return }
                 if let error = error, let errorCode = FirestoreErrorCode(rawValue: error._code) {
@@ -106,13 +106,16 @@ class RecipeTableModel: RecipeTableModelProtocol {
 extension RecipeTableModel {
     private func getRecipes(documents: [QueryDocumentSnapshot]) -> [Recipe] {
         var recipes = [Recipe]()
+        //var n = documents.count
         for document in documents {
             let documentData = document.data()
             if let recipeAuthorId = documentData[Fields.recipeAuthotId] as? String,
                 let recipeName = documentData[Fields.recipeName] as? String,
                 let recipeDescription = documentData[Fields.recipeDescription] as? String,
                 let recipeRating = documentData[Fields.recipeRationg] as? Double,
-                let ingredientsMap = documentData[Fields.recipeIngredients] as? [[String: String]] {
+                let ingredientsMap = documentData[Fields.recipeIngredients] as? [[String: String]],
+                let whoseFavorites = documentData[Fields.whoseFavorites] as? [String],
+                let whoRated = documentData[Fields.whoRated] as? [String] {
                 var ingredients = [Ingredient]()
                 for ingredientMap in ingredientsMap {
                     if let ingredientName = ingredientMap[Fields.ingredientName],
@@ -125,16 +128,30 @@ extension RecipeTableModel {
                         break
                     }
                 }
-                //print(ingredientsMap.count)
                 if ingredients.count == ingredientsMap.count {
                     let recipeId = document.documentID
-                    let recipe = Recipe(id: recipeId, authorId: recipeAuthorId, name: recipeName, description: recipeDescription, rating: recipeRating, ingredients: ingredients)
+                    let recipe = Recipe(id: recipeId, authorId: recipeAuthorId, name: recipeName, description: recipeDescription, rating: recipeRating, ingredients: ingredients, whoseFavorites: whoseFavorites, whoRated: whoRated)
                     recipes.append(recipe)
+                    
+                    
+                    /*downloadRecipeImage(id: recipeId, completion: { [weak self] (imageData, error) in
+                        guard let self = self else { return }
+                        if let error = error {
+                            //...
+                        } else {
+                            
+                        }
+                    })*/
+                    
                 }
             }
         }
         return recipes
     }
+    
+    /*private func readinessCheck(completion: (([Recipe]?, ErrorModel?) -> Void)?) {
+        
+    }*/
     
     private func handleFirestoreError(errorCode: FirestoreErrorCode) -> ErrorModel {
         switch errorCode {

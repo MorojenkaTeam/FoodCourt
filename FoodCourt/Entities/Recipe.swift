@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public struct Recipe {
+public class Recipe {
     private let id: String
     private let authorId: String
     private let name: String
@@ -17,19 +17,24 @@ public struct Recipe {
     private var image: UIImage?
     private let rating: Double
     private let ingredients: [Ingredient]
+    private var whoseFavorites: [String]
+    private var whoRated: [String]
     
-    init(id: String, authorId: String, name: String, description: String, rating: Double,
-         ingredients: [Ingredient]) {
+    init(id: String, authorId: String, name: String, description: String, rating: Double, ingredients: [Ingredient],
+         whoseFavorites: [String], whoRated: [String]) {
         self.id = id
         self.authorId = authorId
         self.name = name
         self.description = description
         self.rating = rating
         self.ingredients = ingredients
-        self.image = UIImage()
+        self.whoseFavorites = whoseFavorites
+        self.whoRated = whoRated
     }
     
-    mutating func setImage(image: UIImage) { self.image = image }
+    func setImage(image: UIImage) { self.image = image }
+    func insertFan(id: String) { whoseFavorites.append(id)}
+    func removeFan(id: String) { _ = whoRated.firstIndex(of: id).map { whoRated.remove(at: $0) } }
     
     func getId() -> String { return id }
     func getAuthorId() -> String { return authorId }
@@ -38,4 +43,6 @@ public struct Recipe {
     func getImage() -> UIImage? { return image }
     func getRating() -> Double { return rating }
     func getIngredients() -> [Ingredient] { return ingredients }
+    func getWhoseFavorites() -> [String] { return whoseFavorites }
+    func getWhoRated() -> [String] { return whoRated }
 }

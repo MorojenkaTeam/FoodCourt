@@ -9,32 +9,27 @@
 import Foundation
 import UIKit
 
-class TabBarController: UITabBarController/*, UITabBarDelegate*/ {
-    let favorites = FavoritesView()
-    let recipeFeed = RecipeTableView()
-    let profile = ProfileView()
+class TabBarController: UITabBarController {
+    private let recipeFeed = RecipeTableView()
+    private let profile = ProfileView()
+    private var currentUsername: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*self.title = "item"
-        self.tabBarItem.image = UIImage(named: "item")
-        self.tabBarItem.selectedImage = UIImage(named: "item_selected")*/
         configure()
     }
     
     private func configure() {
-        //kee.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 2)
-        //kee.tabBarItem.title = "Feed"
-        //kee.tabBarItem.titleTextAttributes(for: .application)
-        //kee.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(), tag: 2)
-        
-       /* profile.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 3)
-        profile.tabBarItem.title = "Profile" */
-        
-        favorites.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "bookmark.fill"), tag: 0)
+        guard let currentUsername = currentUsername else { return }
         recipeFeed.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "book.fill"), tag: 1)
+        recipeFeed.setUsername(username: currentUsername)
         profile.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
         
-        self.viewControllers = [favorites, recipeFeed, profile]
-        self.selectedIndex = 1
+        self.viewControllers = [recipeFeed, profile]
+        self.selectedIndex = 0
+    }
+    
+    func setUsername(username: String) {
+        currentUsername = username
     }
 }

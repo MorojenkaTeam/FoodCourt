@@ -12,7 +12,6 @@ struct Fields {
     //user
     public static let firstName: String = "firstName"
     public static let lastName: String = "lastName"
-    public static let favorites: String = "favorites"
     
     //recipe
     public static let recipeId: String = "id"
@@ -21,6 +20,8 @@ struct Fields {
     public static let recipeDescription: String = "description"
     public static let recipeRationg: String = "rating"
     public static let recipeIngredients: String = "ingredients"
+    public static let whoseFavorites: String = "whoseFavorites"
+    public static let whoRated: String = "whoRated"
     
     //ingredient
     public static let ingredientName: String = "name"

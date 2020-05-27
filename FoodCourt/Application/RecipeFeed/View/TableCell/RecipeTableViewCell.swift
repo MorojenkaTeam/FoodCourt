@@ -30,7 +30,6 @@ class RecipeTableViewCell: UITableViewCell {
             guard let bookmarkImageView = bookmarkImageView else { return }
             DispatchQueue.main.async {
                 bookmarkImageView.image = UIImage(systemName: bookMarkName)
-                bookmarkImageView.tintColor = .orange
             }
         }
     }
@@ -69,7 +68,7 @@ class RecipeTableViewCell: UITableViewCell {
         recipeId = nil
     }
     
-    func configure(with recipe: Recipe, tableController: RecipeTableView) {
+    func configure(with recipe: Recipe, image: UIImage?, tableController: RecipeTableView) {
         self.tableController = tableController
         guard let recipeNameLabel = recipeNameLabel, let recipeDescriptionLabel = recipeDescriptionLabel,
             let recipeImageView = recipeImageView, let recipeCosmosView = recipeCosmosView,
@@ -83,6 +82,14 @@ class RecipeTableViewCell: UITableViewCell {
         recipeImageView.contentMode = .scaleAspectFill
         recipeImageView.layer.cornerRadius = 16
         recipeImageView.clipsToBounds = true
+        if image != nil {
+            print(recipe.getName())
+            //DispatchQueue.main.async {
+            recipeImageView.image = image
+            //}
+        } else {
+            print("kek")
+        }
         recipeCosmosView.settings.fillMode = .precise
         recipeCosmosView.rating = recipe.getRating()
         recipeCosmosView.isUserInteractionEnabled = false
@@ -104,13 +111,12 @@ class RecipeTableViewCell: UITableViewCell {
         let clicked = UITapGestureRecognizer(target: self, action: #selector(bookmarkClicked))
         bookmarkImageView.isUserInteractionEnabled = true
         bookmarkImageView.addGestureRecognizer(clicked)
-        bookmarkImageView.tintColor = UIColor.orange
     }
     
     @objc func bookmarkClicked() {
-        guard let recipeId = recipeId else { return }
+        guard let tableController = tableController, let recipeId = recipeId else { return }
         isFavorite.toggle()
-        tableController?.uploadFavoritesChanges(recipeId: recipeId, changeFlag: isFavorite)
+        tableController.uploadFavoritesChanges(recipeId: recipeId, changeFlag: isFavorite)
     }
     
     func setAsFavorite() {

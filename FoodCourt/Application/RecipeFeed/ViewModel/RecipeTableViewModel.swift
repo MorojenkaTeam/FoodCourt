@@ -28,7 +28,7 @@ class RecipeTableViewModel: RecipeTableViewModelProtocol {
         })
     }
     
-    func downloadFavorites(completion: (([String]?, ErrorViewModel?) -> Void)?) {
+    /*func downloadFavorites(completion: (([String]?, ErrorViewModel?) -> Void)?) {
         guard let tableModel = tableModel else { return }
         tableModel.downloadFavorites(completion: { [weak self] (favorites, error) in
             guard let self = self else { return }
@@ -39,7 +39,7 @@ class RecipeTableViewModel: RecipeTableViewModelProtocol {
                 completion?(favorites, nil)
             }
         })
-    }
+    }*/
     
     func downloadRecipeImage(id: String, completion: ((Data?, ErrorViewModel?) -> Void)?) {
         guard let tableModel = tableModel else { return }
