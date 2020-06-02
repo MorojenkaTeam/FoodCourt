@@ -60,6 +60,7 @@
 		5064EAB2246483B200D2F9D4 /* RecipeTableViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064EAB1246483B200D2F9D4 /* RecipeTableViewModelProtocol.swift */; };
 		5064EAB42464861900D2F9D4 /* RecipeTableModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064EAB32464861900D2F9D4 /* RecipeTableModelProtocol.swift */; };
 		5064EABB24682E2800D2F9D4 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5064EABA24682E2800D2F9D4 /* MainViewController.swift */; };
+		508ECCE62487000B00CF9E2B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508ECCE52487000B00CF9E2B /* TabBarController.swift */; };
 		50935CE3247853B200558DA8 /* RecipeTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5001E59A2448D6B000A2EAA1 /* RecipeTableView.xib */; };
 		50BB96632479AB17000A6212 /* RecipeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50BB96622479AB17000A6212 /* RecipeTableViewCell.xib */; };
 		50BB968C247AD851000A6212 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BB968B247AD851000A6212 /* SearchView.swift */; };
@@ -68,7 +69,6 @@
 		50BB96CA247EC134000A6212 /* FoodCourt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 50BB96C8247EC134000A6212 /* FoodCourt.xcdatamodeld */; };
 		50BB96CE247ECDE7000A6212 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50BB96CD247ECDE7000A6212 /* GoogleService-Info.plist */; };
 		50F478CD246DA6E600E7553B /* TabBarController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50F478CC246DA6E600E7553B /* TabBarController.storyboard */; };
-		50F478D3246DDB1200E7553B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F478D2246DDB1200E7553B /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,14 +131,14 @@
 		5064EABA24682E2800D2F9D4 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		50862FF92455F2FA003AC88E /* FoodCourt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FoodCourt; sourceTree = "<group>"; };
 		50862FFA2455F312003AC88E /* FoodCourtLocalDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FoodCourtLocalDB.framework; path = FoodCourtLocalDB/FoodCourtLocalDB.framework; sourceTree = "<group>"; };
+		508ECCE52487000B00CF9E2B /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		50BB96622479AB17000A6212 /* RecipeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeTableViewCell.xib; sourceTree = "<group>"; };
-		50BB968B247AD851000A6212 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchView.swift; path = Table/SearchView.swift; sourceTree = "<group>"; };
+		50BB968B247AD851000A6212 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		50BB9696247AE70C000A6212 /* SearchView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchView.xib; sourceTree = "<group>"; };
 		50BB96C6247DA212000A6212 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
 		50BB96C9247EC134000A6212 /* FoodCourt.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FoodCourt.xcdatamodel; sourceTree = "<group>"; };
 		50BB96CD247ECDE7000A6212 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		50F478CC246DA6E600E7553B /* TabBarController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBarController.storyboard; sourceTree = "<group>"; };
-		50F478D2246DDB1200E7553B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabBarController.swift; path = ../TabBarController.swift; sourceTree = "<group>"; };
 		B3660A927B7B8094EDEB8909 /* Pods-FoodCourt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodCourt.release.xcconfig"; path = "Target Support Files/Pods-FoodCourt/Pods-FoodCourt.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -248,8 +248,7 @@
 				5042CD07248467EB00CE9C44 /* SignUp */,
 				5042CD11248467EB00CE9C44 /* SignIn */,
 			);
-			name = Authentication;
-			path = "../../../Downloads/FoodCourt-RecipeFeed-2/FoodCourt/Authentication";
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 		5042CD03248467EB00CE9C44 /* Auth */ = {
@@ -351,8 +350,7 @@
 				5042CD39248524B600CE9C44 /* Model */,
 				5042CD2E248524B600CE9C44 /* AddRecipe */,
 			);
-			name = Profile;
-			path = ../Profile;
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		5042CD2C248524B600CE9C44 /* ViewModel */ = {
@@ -535,7 +533,7 @@
 		50F478CE246DA8A500E7553B /* Loading */ = {
 			isa = PBXGroup;
 			children = (
-				50F478D2246DDB1200E7553B /* TabBarController.swift */,
+				508ECCE52487000B00CF9E2B /* TabBarController.swift */,
 				50F478CC246DA6E600E7553B /* TabBarController.storyboard */,
 			);
 			path = Loading;
@@ -689,7 +687,6 @@
 				5064EAB2246483B200D2F9D4 /* RecipeTableViewModelProtocol.swift in Sources */,
 				5042CCF8248121BC00CE9C44 /* RatingAlert.swift in Sources */,
 				5042CD1E248467EB00CE9C44 /* SignUpViewModelProtocol.swift in Sources */,
-				50F478D3246DDB1200E7553B /* TabBarController.swift in Sources */,
 				5042CD4D24868A7C00CE9C44 /* SystemValues.swift in Sources */,
 				5042CD3F248524B600CE9C44 /* AddRecipeViewModel.swift in Sources */,
 				5042CD46248524B600CE9C44 /* ProfileView.swift in Sources */,
@@ -706,6 +703,7 @@
 				5042CD20248467EB00CE9C44 /* SignUpModelProtocol.swift in Sources */,
 				5001E5A12448E1BD00A2EAA1 /* Recipe.swift in Sources */,
 				5042CD40248524B600CE9C44 /* AddRecipeModel.swift in Sources */,
+				508ECCE62487000B00CF9E2B /* TabBarController.swift in Sources */,
 				5042CD4B2485328600CE9C44 /* ProfileModelProtocol.swift in Sources */,
 				504DB888245F09110052F78E /* Ingredient.swift in Sources */,
 				5042CD2A2485077C00CE9C44 /* RecipeCoreDataProtocol.swift in Sources */,

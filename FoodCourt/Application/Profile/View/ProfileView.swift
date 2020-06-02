@@ -43,7 +43,6 @@ class ProfileView: UIViewController {
                 self.showToast(message: receivedError)
                 return
             }
-            print("AAAAAAA")
             let authView = AuthView()
             authView.modalPresentationStyle = .fullScreen
             self.present(authView, animated: true, completion: nil)
