@@ -9,17 +9,13 @@
 import Foundation
 
 struct User {
-    private var username: String
-    private var firstName: String
-    private var lastName: String
+    internal var username:   String
+    internal var firstName:  String
+    internal var lastName:   String
     
     init(username: String, firstName: String, lastName: String) {
-        self.username = username
-        self.firstName = firstName
-        self.lastName = lastName
+        self.username   = username
+        self.firstName  = firstName
+        self.lastName   = lastName
     }
-    
-    func getUsername() -> String { return username }
-    func getFirstName() -> String { return firstName }
-    func getLastName() -> String { return lastName }
 }

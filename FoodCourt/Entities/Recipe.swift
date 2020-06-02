@@ -9,40 +9,38 @@
 import Foundation
 import UIKit
 
-public class Recipe {
-    private let id: String
-    private let authorId: String
-    private let name: String
-    private let description: String
-    private var image: UIImage?
-    private let rating: Double
-    private let ingredients: [Ingredient]
-    private var whoseFavorites: [String]
-    private var whoRated: [String]
+public class Recipe: Equatable {
+    internal let id:             String
+    internal let authorId:       String
+    internal let name:           String
+    internal let description:    String
+    internal var image:          UIImage?
+    internal var rating:         Double
+    internal let ingredients:    [Ingredient]
+    internal var whoseFavorites: [String]
+    internal var whoRated:       [String]
     
     init(id: String, authorId: String, name: String, description: String, rating: Double, ingredients: [Ingredient],
          whoseFavorites: [String], whoRated: [String]) {
-        self.id = id
-        self.authorId = authorId
-        self.name = name
-        self.description = description
-        self.rating = rating
-        self.ingredients = ingredients
+        self.id             = id
+        self.authorId       = authorId
+        self.name           = name
+        self.description    = description
+        self.rating         = rating
+        self.ingredients    = ingredients
         self.whoseFavorites = whoseFavorites
-        self.whoRated = whoRated
+        self.whoRated       = whoRated
     }
     
-    func setImage(image: UIImage) { self.image = image }
+    public static func ==(lhs: Recipe, rhs: Recipe) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func setImage(image: UIImage)                       { self.image = image }
+    func setRating(rating: Double)                      { self.rating = rating }
+    func setWhoRated(whoRated: [String])                { self.whoRated = whoRated }
+    func setWhoseFavorites(whoseFavorites: [String])    { self.whoseFavorites = whoseFavorites }
+    
     func insertFan(id: String) { whoseFavorites.append(id)}
     func removeFan(id: String) { _ = whoRated.firstIndex(of: id).map { whoRated.remove(at: $0) } }
-    
-    func getId() -> String { return id }
-    func getAuthorId() -> String { return authorId }
-    func getName() -> String { return name }
-    func getDescription() -> String { return description }
-    func getImage() -> UIImage? { return image }
-    func getRating() -> Double { return rating }
-    func getIngredients() -> [Ingredient] { return ingredients }
-    func getWhoseFavorites() -> [String] { return whoseFavorites }
-    func getWhoRated() -> [String] { return whoRated }
 }

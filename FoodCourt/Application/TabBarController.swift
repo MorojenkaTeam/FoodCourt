@@ -21,10 +21,21 @@ class TabBarController: UITabBarController {
     
     private func configure() {
         guard let currentUsername = currentUsername else { return }
-        recipeFeed.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "book.fill"), tag: 1)
+        recipeFeed.tabBarItem = UITabBarItem(title: nil,
+                                             image: UIImage(named: SystemValues.imageCapName)?
+                                                .withRenderingMode(.alwaysOriginal),
+                                             tag: 1)
+        recipeFeed.tabBarItem.selectedImage = UIImage(named: SystemValues.imageCapFillName)?
+            .withRenderingMode(.alwaysOriginal)
+        recipeFeed.tabBarItem.imageInsets = UIEdgeInsets(top: 9, left: 0, bottom: -9, right: 0)
         recipeFeed.setUsername(username: currentUsername)
-        profile.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 2)
-        
+        profile.tabBarItem = UITabBarItem(title: nil,
+                                          image: UIImage(named: SystemValues.imagePersonName)?
+                                            .withRenderingMode(.alwaysOriginal),
+                                          tag: 2)
+        profile.tabBarItem.selectedImage = UIImage(named: SystemValues.imagePersonFillName)?
+            .withRenderingMode(.alwaysOriginal)
+        profile.tabBarItem.imageInsets = UIEdgeInsets(top: 9, left: 0, bottom: -9, right: 0)
         self.viewControllers = [recipeFeed, profile]
         self.selectedIndex = 0
     }

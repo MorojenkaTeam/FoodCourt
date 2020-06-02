@@ -11,4 +11,7 @@ import Foundation
 protocol RecipeTableModelProtocol {
     func downloadRecipes(completion: (([Recipe]?, ErrorModel?) -> Void)?)
     func downloadRecipeImage(id: String, completion: ((Data?, ErrorModel?) -> Void)?)
+    func uploadFavoritesChanges(id: String, changeFlag: Bool, completion: ((ErrorModel?) -> Void)?)
+    func uploadRatingChanges(id: String, receivedRating: Double, completion: ((ErrorModel?) -> Void)?)
+    func observeRealtimeRecipeUpdates(completion: ((Recipe?, FirestoreDocumentChangeType?, ErrorModel?) -> Void)?)
 }

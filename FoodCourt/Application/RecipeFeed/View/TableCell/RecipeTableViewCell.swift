@@ -18,6 +18,9 @@ class RecipeTableViewCell: UITableViewCell {
     @IBOutlet private weak var ingredientsStackView: UIStackView?
     @IBOutlet private weak var recipeCosmosView: CosmosView?
     @IBOutlet private weak var bookmarkImageView: UIImageView?
+    @IBOutlet private weak var numberOfRatings: UILabel?
+    @IBOutlet private weak var numberOfFans: UILabel?
+    @IBOutlet private weak var rateButton: UIButton?
     
     @IBOutlet private weak var collapsedConstraint: NSLayoutConstraint?
     @IBOutlet private weak var expandedConstraint: NSLayoutConstraint?
@@ -26,210 +29,226 @@ class RecipeTableViewCell: UITableViewCell {
     private var tableController: RecipeTableView?
     private var isFavorite: Bool = false {
         didSet {
-            let bookMarkName: String = isFavorite ? "bookmark.fill" : "bookmark"
-            guard let bookmarkImageView = bookmarkImageView else { return }
+            let bookMarkName: String = isFavorite ? SystemValues.imageMarkFillName : SystemValues.imageMarkName
+            guard let tableController = tableController else {
+                print("Ooops. somewhere in cell tableController is nil.")
+                return
+            }
+            guard let bookmarkImageView = bookmarkImageView else {
+                tableController.showToast(message: ErrorView.systemError)
+                return
+            }
+            bookmarkImageView.image = UIImage(named: bookMarkName)?.withRenderingMode(.alwaysOriginal)
+        }
+    }
+    private var isRated: Bool = false {
+        didSet {
+            guard let tableController = tableController else {
+                print("Ooops. somewhere in cell tableController is nil.")
+                return
+            }
+            guard let rateButton = rateButton else {
+                tableController.showToast(message: ErrorView.systemError)
+                return
+            }
             DispatchQueue.main.async {
-                bookmarkImageView.image = UIImage(systemName: bookMarkName)
+                if self.isRated {
+                    rateButton.setTitleColor(.systemGreen, for: .normal)
+                    rateButton.setTitle("Rated ✓", for: .normal)
+                    rateButton.isUserInteractionEnabled = false
+                } else {
+                    rateButton.setTitleColor(.systemBlue, for: .normal)
+                    rateButton.setTitle("Rate", for: .normal)
+                    rateButton.isUserInteractionEnabled = true
+                }
             }
         }
     }
     private var isExpanded: Bool = false {
         didSet {
+            guard let tableController = tableController else {
+                print("Ooops. somewhere in cell tableController is nil.")
+                return
+            }
             guard let collapsedConstraint = collapsedConstraint, let expandedConstraint = expandedConstraint
-                else { return }
+                else {
+                    tableController.showToast(message: ErrorView.systemError)
+                    return
+            }
             expandedConstraint.priority = isExpanded ? .defaultHigh : .defaultLow
             collapsedConstraint.priority = isExpanded ? .defaultLow : .defaultHigh
         }
     }
     
-    //private var collapsedBorder: CGFloat = 0.0
-    //private var expandedBorder: CGFloat = 0.0
-    
-    /*override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setConstraints()
+    @IBAction func doRate(_ sender: UIButton) {
+        guard let tableController = tableController else {
+            print("Ooops. somewhere in cell tableController is nil.")
+            return
+        }
+        guard let recipeId = recipeId else {
+            tableController.showToast(message: ErrorView.systemError)
+            return
+        }
+        let ratingAlert = RatingAlert()
+        ratingAlert.modalPresentationStyle = .overCurrentContext
+        ratingAlert.setTableController(tableController: tableController)
+        ratingAlert.setTableCell(cell: self)
+        ratingAlert.setRecipeId(recipeId: recipeId)
+        tableController.present(ratingAlert, animated: true, completion: nil)
     }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setConstraints()
-    }*/
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        guard /*let recipeNameLabel = recipeNameLabel, let recipeDescriptionLabel = recipeDescriptionLabel,*/
-            let recipeImageView = recipeImageView, let ingredientsStackView = ingredientsStackView
-            else { return }
-        //recipeNameLabel.text = nil
-        //recipeDescriptionLabel.text = nil
+        guard let tableController = tableController else {
+            print("Ooops. somewhere in cell tableController is nil.")
+            return
+        }
+        guard let recipeImageView = recipeImageView, let ingredientsStackView = ingredientsStackView
+            else {
+                tableController.showToast(message: ErrorView.systemError)
+                return
+        }
         recipeImageView.image = nil
         ingredientsStackView.clean()
-        //bookmarkImageView = nil
         recipeId = nil
+        self.backgroundColor = nil
     }
     
-    func configure(with recipe: Recipe, image: UIImage?, tableController: RecipeTableView) {
+    func configure(with recipe: Recipe, isFavorite: Bool, isRated: Bool, image: UIImage?,
+                   tableController: RecipeTableView) {
         self.tableController = tableController
         guard let recipeNameLabel = recipeNameLabel, let recipeDescriptionLabel = recipeDescriptionLabel,
             let recipeImageView = recipeImageView, let recipeCosmosView = recipeCosmosView,
-            let ingredientsStackView = ingredientsStackView, let bookmarkImageView = bookmarkImageView
-            else { return }
-        recipeId = recipe.getId()
-        recipeNameLabel.text = recipe.getName()
-        recipeDescriptionLabel.text = recipe.getDescription()
-        //let imageUrl = URL(string: recipe.imageData)
-        //recipeImageView?.kf.setImage(with: imageUrl)
+            let ingredientsStackView = ingredientsStackView, let bookmarkImageView = bookmarkImageView,
+            let numberOfRatings = numberOfRatings, let numberOfFans = numberOfFans
+            else {
+                tableController.showToast(message: ErrorView.systemError)
+                return
+        }
+        
+        recipeId = recipe.id
+        recipeNameLabel.text = recipe.name
+        recipeDescriptionLabel.text = recipe.description
         recipeImageView.contentMode = .scaleAspectFill
         recipeImageView.layer.cornerRadius = 16
         recipeImageView.clipsToBounds = true
         if image != nil {
-            print(recipe.getName())
-            //DispatchQueue.main.async {
             recipeImageView.image = image
-            //}
-        } else {
-            print("kek")
+        } else if let existingImage = recipe.image {
+            recipeImageView.image = existingImage
         }
         recipeCosmosView.settings.fillMode = .precise
-        recipeCosmosView.rating = recipe.getRating()
+        recipeCosmosView.settings.filledImage = UIImage(named: SystemValues.imageStarFillName)?
+            .withRenderingMode(.alwaysOriginal)
+        recipeCosmosView.settings.emptyImage = UIImage(named: SystemValues.imageStarName)?
+            .withRenderingMode(.alwaysOriginal)
+        recipeCosmosView.rating = recipe.rating
         recipeCosmosView.isUserInteractionEnabled = false
         
-        let ingredients = recipe.getIngredients()
-        for ingredient in ingredients {
-            let textLabel = UILabel()
-            textLabel.backgroundColor = UIColor.yellow
-            textLabel.widthAnchor.constraint(equalToConstant: ingredientsStackView.frame.width).isActive = true
-            textLabel.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-            textLabel.text = ingredient.getName() + " " + String(ingredient.getAmount()) + " " + ingredient.getMeasure()
-            textLabel.textAlignment = .left
-            textLabel.numberOfLines = 0
-            textLabel.lineBreakMode = .byWordWrapping
-            ingredientsStackView.addArrangedSubview(textLabel)
-        }
-        ingredientsStackView.translatesAutoresizingMaskIntoConstraints = false
+        let ingredients = recipe.ingredients
+        setIngredients(ingredients: ingredients, ingredientsStackView: ingredientsStackView)
         
         let clicked = UITapGestureRecognizer(target: self, action: #selector(bookmarkClicked))
         bookmarkImageView.isUserInteractionEnabled = true
         bookmarkImageView.addGestureRecognizer(clicked)
+        self.isFavorite = isFavorite
+        
+        self.isRated = isRated
+        let whoRated = recipe.whoRated
+        numberOfRatings.text = whoRated.isEmpty ? "no ratings" : "(\(whoRated.count))"
+        numberOfFans.text = "x \(recipe.whoseFavorites.count)"
+    }
+    
+    private func setIngredients(ingredients: [Ingredient], ingredientsStackView: UIStackView) {
+        for ingredient in ingredients {
+            let stackView = UIStackView()
+            stackView.axis = .horizontal
+            stackView.alignment = .fill
+            stackView.distribution = .fill
+            ingredientsStackView.addArrangedSubview(stackView)
+            stackView.leadingAnchor.constraint(equalTo: ingredientsStackView.leadingAnchor,
+                                               constant: 0.0).isActive = true
+            stackView.trailingAnchor.constraint(equalTo: ingredientsStackView.trailingAnchor,
+                                                constant: 0.0).isActive = true
+            
+            let nameLabel = UILabel()
+            nameLabel.text = ingredient.name
+            nameLabel.lineBreakMode = .byWordWrapping
+            nameLabel.contentMode = .left
+            nameLabel.numberOfLines = 0
+            let ellipsisLabel = UILabel()
+            ellipsisLabel.text = ""
+            let amountAndMeasureLabel = UILabel()
+            amountAndMeasureLabel.text = String(ingredient.amount) + " " + ingredient.measure
+            amountAndMeasureLabel.contentMode = .left
+            for label in [nameLabel, ellipsisLabel, amountAndMeasureLabel] {
+                label.font = UIFont(name: "Montserrat-Medium", size: 14)
+                stackView.addArrangedSubview(label)
+            }
+            NSLayoutConstraint.activate([
+                nameLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0.0),
+                nameLabel.trailingAnchor.constraint(equalTo: ellipsisLabel.leadingAnchor, constant: 0.0),
+                nameLabel.widthAnchor.constraint(
+                    equalToConstant: nameLabel.intrinsicContentSize.width),
+                amountAndMeasureLabel.leadingAnchor.constraint(equalTo: ellipsisLabel.trailingAnchor, constant: 0.0),
+                amountAndMeasureLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 0.0),
+                amountAndMeasureLabel.widthAnchor.constraint(
+                    equalToConstant: amountAndMeasureLabel.intrinsicContentSize.width)
+            ])
+            stackView.layoutIfNeeded()
+            
+            while ellipsisLabel.intrinsicContentSize.width <= ellipsisLabel.frame.width {
+                ellipsisLabel.text?.append(".")
+            }
+        }
+        ingredientsStackView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     @objc func bookmarkClicked() {
-        guard let tableController = tableController, let recipeId = recipeId else { return }
+        guard let tableController = tableController else {
+            print("Ooops. somewhere in cell tableController is nil.")
+            return
+        }
+        guard let recipeId = recipeId else {
+            tableController.showToast(message: ErrorView.systemError)
+            return
+        }
         isFavorite.toggle()
-        tableController.uploadFavoritesChanges(recipeId: recipeId, changeFlag: isFavorite)
-    }
-    
-    func setAsFavorite() {
-        isFavorite = true
-    }
-    
-    func setAsNotFavorite() {
-        isFavorite = false
-    }
-    
-    func setImage(image: UIImage) {
-        guard let recipeImageView = recipeImageView else { return }
-        recipeImageView.image = image
+        tableController.uploadFavoritesChanges(recipeId: recipeId, changeFlag: isFavorite, cell: self)
     }
 }
 
 extension RecipeTableViewCell {
-    func setIsExpanded(_ isExpanded: Bool) { self.isExpanded = isExpanded }
-    func getIsExpanded() -> Bool { return isExpanded }
-    func setIsFavorite(_ isFavorite: Bool) { self.isFavorite = isFavorite }
-    func getIsFavorite() -> Bool { return isFavorite }
+    func toggleIsExpanded() { isExpanded.toggle() }
+    func toggleIsRated() { isRated.toggle() }
+    func toggleIsFavorite() { isFavorite.toggle() }
     
+    func setImage(image: UIImage) {
+        guard let tableController = tableController else {
+            print("Ooops. somewhere in cell tableController is nil.")
+            return
+        }
+        guard let recipeImageView = recipeImageView else {
+            tableController.showToast(message: ErrorView.systemError)
+            return
+        }
+        recipeImageView.image = image
+    }
     
-    //func getCollapsedBorder() -> CGFloat { return collapsedBorder }
-    //func getExpandedBorder() -> CGFloat { return expandedBorder }
-    
-    /*private func setConstraints() {
-        guard var collapsedConstraint = collapsedConstraint, var expandedConstraint = expandedConstraint,
-            let cellView = cellView, let ingredientsStackView = ingredientsStackView,
-            let recipeNameLabel = recipeNameLabel, let recipeImageView = recipeImageView,
-            let recipeDescriptionLabel = recipeDescriptionLabel, let recipeCosmosView = recipeCosmosView
-            else { return }
-        expandedConstraint = ingredientsStackView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor,
-                                                                          constant: -8.0)
-        collapsedConstraint = recipeNameLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8.0)
-        expandedConstraint.priority = .defaultLow
-        collapsedConstraint.priority = .defaultHigh
-        let marginsGuide = contentView.layoutMarginsGuide
-        NSLayoutConstraint.activate([
-            cellView.topAnchor.constraint(equalTo: marginsGuide.topAnchor, constant: 0.0),
-            cellView.leadingAnchor.constraint(equalTo: marginsGuide.leadingAnchor, constant: 0.0),
-            cellView.trailingAnchor.constraint(equalTo: marginsGuide.trailingAnchor, constant: 0.0),
-            cellView.bottomAnchor.constraint(equalTo: marginsGuide.bottomAnchor, constant: 0.0),
-            
-            recipeImageView.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 0.0),
-            recipeImageView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 0.0),
-            recipeImageView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: 0.0),
-            recipeImageView.heightAnchor.constraint(equalToConstant: 152.0),
-            
-            recipeNameLabel.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 8.0),
-            recipeNameLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 8.0),
-            recipeNameLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -175.0),
-            
-            recipeCosmosView.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 8.0),
-            recipeCosmosView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 194.0),
-            recipeCosmosView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8.0),
-            
-            recipeDescriptionLabel.topAnchor.constraint(equalTo: recipeNameLabel.bottomAnchor, constant: 8.0),
-            recipeDescriptionLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 8.0),
-            recipeDescriptionLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8.0),
-            
-            ingredientsStackView.topAnchor.constraint(equalTo: recipeDescriptionLabel.bottomAnchor, constant: 8.0),
-            ingredientsStackView.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 8.0),
-            ingredientsStackView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -8.0),
-            ingredientsStackView.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -8.0),
-
-            expandedConstraint, collapsedConstraint,
-        ])
+    /*func modifyCell(recipe: Recipe) {
+        recipeCosmosView?.rating = recipe.getRating()
+        let whoRated = recipe.getWhoRated()
+        numberOfRatings?.text = whoRated.isEmpty ? "no ratings" : "(\(whoRated.count))"
+        numberOfFans?.text = "x \(recipe.getWhoseFavorites().count)"
     }*/
 }
-
-/*class IngredientsStackView: UIStackView {
-    //private var maxYRegardingSuperView: CGFloat?
-    
-    private func removeChild(view: UIView) {
-        removeArrangedSubview(view)
-        view.removeFromSuperview()
-    }
-
-    func clean() {
-        arrangedSubviews.forEach { (view) in
-            removeChild(view: view)
-        }
-        //maxYRegardingSuperView = nil
-    }
-    
-    /*func getMaxYRegardingSuperview(completion: ((CGFloat?) -> Void)?) {
-        print("HERE")
-        while maxYRegardingSuperView == nil {}
-        print(maxYRegardingSuperView ?? "kek")
-        completion?(maxYRegardingSuperView)
-    }*/
-    
-    /*func getMaxYRegardingSuperview() -> CGFloat {
-        print("HERE")
-        //while maxYRegardingSuperView == nil {}
-        guard let maxYRegardingSuperView = maxYRegardingSuperView else { return 0.0 }
-        return maxYRegardingSuperView
-        
-    }
-    
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-        maxYRegardingSuperView = self.frame.maxY
-    }*/
-}*/
 
 extension UIStackView {
     private func removeChild(view: UIView) {
         removeArrangedSubview(view)
         view.removeFromSuperview()
     }
-
+    
     func clean() {
         arrangedSubviews.forEach { (view) in
             removeChild(view: view)
