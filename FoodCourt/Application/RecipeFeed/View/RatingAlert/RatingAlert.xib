@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Bold.ttf">
+            <string>Montserrat-Bold</string>
+        </array>
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RatingAlert" customModule="FoodCourt" customModuleProvider="target">
+            <connections>
+                <outlet property="alertView" destination="hkM-yX-OwJ" id="mZY-b3-9Lp"/>
+                <outlet property="ratingView" destination="OUr-Jj-ghJ" id="Ck0-G0-cgX"/>
+                <outlet property="view" destination="iN0-l3-epB" id="5Sa-Ld-PmQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hkM-yX-OwJ">
+                    <rect key="frame" x="19.5" y="623" width="375" height="191"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUr-Jj-ghJ" customClass="CosmosView" customModule="Cosmos">
+                            <rect key="frame" x="25" y="30" width="325" height="61"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                    <real key="value" value="61"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="412-ce-iSo">
+                            <rect key="frame" x="10" y="133" width="355" height="50"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QiS-mo-fHj">
+                                    <rect key="frame" x="0.0" y="0.0" width="150" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="150" id="WFJ-s8-9ZC"/>
+                                        <constraint firstAttribute="height" constant="50" id="hEs-CG-0CO"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="23"/>
+                                    <state key="normal" title="Rate!"/>
+                                    <connections>
+                                        <action selector="doRate:" destination="-1" eventType="touchUpInside" id="opj-zk-HkV"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PlL-xA-t4k">
+                                    <rect key="frame" x="205" y="0.0" width="150" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="Sur-Pb-VMi"/>
+                                        <constraint firstAttribute="width" constant="150" id="qrN-Od-u0b"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="17"/>
+                                    <state key="normal" title="Cancel"/>
+                                    <connections>
+                                        <action selector="cancel:" destination="-1" eventType="touchUpInside" id="Ofe-jv-png"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="OUr-Jj-ghJ" firstAttribute="top" secondItem="hkM-yX-OwJ" secondAttribute="top" constant="30" id="96q-wp-cDy"/>
+                        <constraint firstAttribute="trailing" secondItem="412-ce-iSo" secondAttribute="trailing" constant="10" id="DQB-ka-HMx"/>
+                        <constraint firstAttribute="height" constant="191" id="F9o-Pg-PNh"/>
+                        <constraint firstItem="412-ce-iSo" firstAttribute="leading" secondItem="hkM-yX-OwJ" secondAttribute="leading" constant="10" id="HBS-NS-FuL"/>
+                        <constraint firstItem="412-ce-iSo" firstAttribute="top" secondItem="OUr-Jj-ghJ" secondAttribute="bottom" constant="42" id="Tfv-le-9j5"/>
+                        <constraint firstItem="OUr-Jj-ghJ" firstAttribute="leading" secondItem="hkM-yX-OwJ" secondAttribute="leading" constant="25" id="UME-HB-XNh"/>
+                        <constraint firstAttribute="bottom" secondItem="412-ce-iSo" secondAttribute="bottom" constant="8" id="bZz-uT-cEm"/>
+                        <constraint firstAttribute="trailing" secondItem="OUr-Jj-ghJ" secondAttribute="trailing" constant="25" id="piH-Cu-K1B"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="BqZ-Uw-lMa" firstAttribute="bottom" secondItem="hkM-yX-OwJ" secondAttribute="bottom" constant="48" id="BJO-JT-af6"/>
+                <constraint firstItem="hkM-yX-OwJ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="BMt-vo-qcy"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="BqZ-Uw-lMa"/>
+            <point key="canvasLocation" x="137.68115942028987" y="152.67857142857142"/>
+        </view>
+    </objects>
+</document>

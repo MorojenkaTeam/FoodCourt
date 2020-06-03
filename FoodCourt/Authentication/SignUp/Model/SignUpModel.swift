@@ -21,8 +21,8 @@ class SignUpModel: SignUpModelProtocol {
     }
     
     func checkUsernameAndSignUp(email: String, password: String, user: User, completion: ((ErrorModel?) -> Void)?) {
-        guard let username = user.username else { return }
-        db.collection(Collections.users).document(username).getDocument { [weak self] (document, error) in
+        //guard let username = user.username else { return }
+        db.collection(Collections.users).document(user.username).getDocument { [weak self] (document, error) in
             guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
                 let receivedError = self.handleError(errorCode: errorCode)
@@ -38,17 +38,18 @@ class SignUpModel: SignUpModelProtocol {
 
 extension SignUpModel {
     private func signUp(email: String, password: String, user: User, completion: ((ErrorModel?) -> Void)?) {
-        guard let firstName = user.firstName, let lastName = user.lastName, let username = user.username else {
+        /*guard let firstName = user.getFirstName(), let lastName = user.lastName, let username = user.username else {
             completion?(ErrorModel.nilUserData)
             return
-        }
+        }*/
         self.auth.createUser(withEmail: email, password: password) { [weak self] (result, error) in
             guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
                 let receivedError = self.handleError(errorCode: errorCode)
                 completion?(receivedError)
             } else  {
-                self.setUserData(firstName: firstName, lastName: lastName, username: username, completion: completion)
+                self.setUserData(firstName: user.firstName, lastName: user.lastName,
+                                 username: user.username, completion: completion)
             }
         }
     }

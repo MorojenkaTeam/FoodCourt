@@ -12,14 +12,15 @@ import FirebaseAuth
 import Firebase
 
 class SignInModel: SignInModelProtocol {
-    func signIn(email: String, password: String, completion: ((ErrorModel?) -> Void)?) {
+    func signIn(email: String, password: String, completion: ((String?, ErrorModel?) -> Void)?) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (result, error) in
             guard let self = self else { return }
             if let error = error, let errorCode = AuthErrorCode(rawValue: error._code) {
                 let receivedError = self.handleError(errorCode: errorCode)
-                completion?(receivedError)
-            } else  {
-                completion?(nil)
+                completion?(nil, receivedError)
+            } else {
+                guard let username = Auth.auth().currentUser?.displayName else { return }
+                completion?(username, nil)
             }
         }
     }

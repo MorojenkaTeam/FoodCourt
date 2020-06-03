@@ -9,11 +9,13 @@
 import Foundation
 
 public struct Ingredient {
-    let name: String
-    let amount: Int
+    internal let name:       String
+    internal let amount:     Int
+    internal let measure:    String
     
-    init(name: String, amount: Int) {
-        self.name = name
-        self.amount = amount
+    init(name: String, amount: Int, measure: String) {
+        self.name       = name
+        self.amount     = amount
+        self.measure    = measure
     }
 }

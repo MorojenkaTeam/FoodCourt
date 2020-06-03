@@ -9,11 +9,11 @@
 import UIKit
 
 class SignInView: UIViewController {
-    @IBOutlet weak var emailTextField: UITextField?
-    @IBOutlet weak var passwordTextField: UITextField?
-    @IBOutlet weak var errorLabel: UILabel?
-    @IBOutlet weak var signInButton: UIButton?
-    @IBOutlet weak var scrollView: UIScrollView?
+    @IBOutlet private weak var emailTextField: UITextField?
+    @IBOutlet private weak var passwordTextField: UITextField?
+    @IBOutlet private weak var errorLabel: UILabel?
+    @IBOutlet private weak var signInButton: UIButton?
+    @IBOutlet private weak var scrollView: UIScrollView?
     
     private var activeTextField: UITextField?
     private var viewModel: SignInViewModel?
@@ -23,16 +23,30 @@ class SignInView: UIViewController {
         guard let errorLabel = errorLabel else { return }
         errorLabel.alpha = 0
         guard let signInButton = signInButton else { return }
-        signInButton.layer.cornerRadius = 16
+        signInButton.layer.cornerRadius = 20
         signInButton.clipsToBounds = true
+        signInButton.layer.borderWidth = 0.5
+        signInButton.layer.borderColor = UIColor.gray.cgColor
         viewModel = SignInViewModel()
         
         guard let emailTextField = emailTextField else { return }
         emailTextField.delegate = self
+        emailTextField.layer.cornerRadius = 20
+        emailTextField.clipsToBounds = true
+        emailTextField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        emailTextField.layer.borderWidth = 0.5
+        emailTextField.layer.borderColor = UIColor.gray.cgColor
+        
         guard let passwordTextField = passwordTextField else { return }
         passwordTextField.delegate = self
+        passwordTextField.layer.cornerRadius = 20
+        passwordTextField.clipsToBounds = true
+        passwordTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        passwordTextField.layer.borderWidth = 0.5
+        passwordTextField.layer.borderColor = UIColor.gray.cgColor
+        
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotifications()
@@ -49,7 +63,7 @@ class SignInView: UIViewController {
             let password = passwordTextField?.text,
             let viewModel = viewModel else { return }
         
-        viewModel.signIn(email: email, password: password, completion: { [weak self] (error) in
+        viewModel.signIn(email: email, password: password, completion: { [weak self] (username, error) in
             guard let self = self else { return }
             if let error = error {
                 let receivedError = self.handleError(error: error)
@@ -57,9 +71,28 @@ class SignInView: UIViewController {
                 errorLabel.text = receivedError
                 errorLabel.alpha = 1
             } else {
-                let recipeFeed = RecipeTableView()
+                /*let recipeFeed = RecipeTableView()
                 recipeFeed.modalPresentationStyle = .fullScreen
-                self.present(recipeFeed, animated: true, completion: nil)
+                self.present(recipeFeed, animated: true, completion: nil)*/
+                
+                /*let tabBar = TabBarController()
+                tabBar.modalPresentationStyle = .fullScreen
+                self.present(tabBar, animated: true, completion: nil)*/
+                
+                /*let tabBarStoryboard = UIStoryboard(name: "TabBarController", bundle: nil)
+                let vc = tabBarStoryboard.instantiateViewController(identifier: "TabBarController")
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true, completion: nil)*/
+                
+                let tabBarStoryboard = UIStoryboard(name: "TabBarController", bundle: nil)
+                let controller = tabBarStoryboard.instantiateViewController(identifier: "TabBarController")
+                guard let tabBarController = controller as? TabBarController, let currentUsername = username
+                    else {
+                        return
+                }
+                tabBarController.setUsername(username: currentUsername)
+                tabBarController.modalPresentationStyle = .fullScreen
+                self.present(tabBarController, animated: true, completion: nil)
             }
         })
     }

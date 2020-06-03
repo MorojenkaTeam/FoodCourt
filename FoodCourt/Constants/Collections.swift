@@ -9,5 +9,6 @@
 import Foundation
 
 enum Collections {
-    public static let users: String = "users"
+    public static let users:    String = "users"
+    public static let recipes:  String = "recipes"
 }

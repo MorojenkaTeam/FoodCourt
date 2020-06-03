@@ -27,20 +27,12 @@ class SignUpView: UIViewController {
         super.viewDidLoad()
         guard let errorLabel = errorLabel, let signUpButton = signUpButton else { return }
         errorLabel.alpha = 0
-        signUpButton.layer.cornerRadius = 16
+        signUpButton.layer.cornerRadius = 20
         signUpButton.clipsToBounds = true
+        signUpButton.layer.borderWidth = 0.5
+        signUpButton.layer.borderColor = UIColor.gray.cgColor
         viewModel = SignUpViewModel()
-        
-        guard let firstNameTextField = firstNameTextField, let lastNameTextField = lastNameTextField,
-            let usernameTextField = usernameTextField, let emailTextField = emailTextField,
-            let passwordTextField = passwordTextField,
-            let repeatedPasswordTextField = repeatedPasswordTextField else { return }
-        firstNameTextField.delegate = self
-        lastNameTextField.delegate = self
-        usernameTextField.delegate = self
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        repeatedPasswordTextField.delegate = self
+        buttonsDesign();
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,8 +59,8 @@ class SignUpView: UIViewController {
     
     @IBAction private func signUpButton(_ sender: Any) {
         guard let firstName = firstNameTextField?.text, let lastName = lastNameTextField?.text,
-        let username = usernameTextField?.text, let email = emailTextField?.text,
-        let password = passwordTextField?.text, let repeatedPassword = repeatedPasswordTextField?.text else { return }
+            let username = usernameTextField?.text, let email = emailTextField?.text,
+            let password = passwordTextField?.text, let repeatedPassword = repeatedPasswordTextField?.text else { return }
         let checked = checkDataAndGetUser(firstName: firstName, lastName: lastName, username: username, email: email, password: password, repeatedPassword: repeatedPassword)
         if checked.1 != nil {
             guard let errorLabel = errorLabel else { return }
@@ -96,6 +88,37 @@ class SignUpView: UIViewController {
         let signInView = SignInView()
         signInView.modalPresentationStyle = .fullScreen
         self.present(signInView, animated: true, completion: nil)
+    }
+    
+    
+    func buttonsDesign(){
+        guard let firstNameTextField = firstNameTextField, let lastNameTextField = lastNameTextField,
+        let usernameTextField = usernameTextField, let emailTextField = emailTextField,
+        let passwordTextField = passwordTextField,
+        let repeatedPasswordTextField = repeatedPasswordTextField else { return }
+        
+        firstNameTextField.delegate = self
+        lastNameTextField.delegate = self
+        usernameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        repeatedPasswordTextField.delegate = self
+        
+        for textField in [firstNameTextField, emailTextField, passwordTextField] {
+            textField.layer.cornerRadius = 20
+            textField.clipsToBounds = true
+            textField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+            textField.layer.borderWidth = 0.5
+            textField.layer.borderColor = UIColor.gray.cgColor
+        }
+        
+        for textField in [lastNameTextField, usernameTextField, repeatedPasswordTextField] {
+            textField.layer.cornerRadius = 20
+            textField.clipsToBounds = true
+            textField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            textField.layer.borderWidth = 0.5
+            textField.layer.borderColor = UIColor.gray.cgColor
+        }
     }
 }
 

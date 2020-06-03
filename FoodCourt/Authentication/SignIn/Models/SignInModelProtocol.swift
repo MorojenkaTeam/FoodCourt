@@ -10,6 +10,6 @@ import Foundation
 import UIKit
 
 protocol SignInModelProtocol {
-    func signIn(email: String, password: String, completion: ((ErrorModel?) -> Void)?)
+    func signIn(email: String, password: String, completion: ((String?, ErrorModel?) -> Void)?)
 }
 

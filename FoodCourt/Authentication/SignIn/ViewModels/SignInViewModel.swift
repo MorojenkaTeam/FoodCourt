@@ -16,14 +16,14 @@ class SignInViewModel: SignInViewModelProtocol {
         signInModel = SignInModel()
     }
     
-    func signIn(email: String, password: String, completion: ((ErrorViewModel?) -> Void)?) {
-        signInModel.signIn(email: email, password: password, completion: { [weak self] (error) in
+    func signIn(email: String, password: String, completion: ((String?, ErrorViewModel?) -> Void)?) {
+        signInModel.signIn(email: email, password: password, completion: { [weak self] (username, error) in
             guard let self = self else { return }
             if let error = error {
                 let receivedError = self.handleError(error: error)
-                completion?(receivedError)
+                completion?(nil, receivedError)
             } else {
-                completion?(nil)
+                completion?(username, nil)
             }
         })
     }

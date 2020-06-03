@@ -6,6 +6,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Medium.ttf">
+            <string>Montserrat-Medium</string>
+        </array>
+        <array key="Montserrat-Regular.ttf">
+            <string>Montserrat-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignInView" customModule="FoodCourt" customModuleProvider="target">
             <connections>
@@ -28,77 +36,79 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHe-rY-nnn">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="29" translatesAutoresizingMaskIntoConstraints="NO" id="Ey3-du-Bza">
-                                    <rect key="frame" x="75" y="305" width="225" height="109"/>
-                                    <subviews>
-                                        <textField opaque="NO" contentMode="scaleToFill" restorationIdentifier="SignInViewController" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1hH-e0-WkE">
-                                            <rect key="frame" x="0.0" y="0.0" width="225" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="225" id="MmT-Zi-Aca"/>
-                                                <constraint firstAttribute="height" constant="40" id="s18-QA-sp5"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                        </textField>
-                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pNM-RW-arO">
-                                            <rect key="frame" x="0.0" y="69" width="225" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="FHH-zo-7wd"/>
-                                                <constraint firstAttribute="width" constant="225" id="PFt-g5-Ikq"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
-                                        </textField>
-                                    </subviews>
-                                </stackView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TY4-az-34V">
-                                    <rect key="frame" x="16" y="559" width="343" height="80"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="343" id="PhQ-Jh-21G"/>
-                                        <constraint firstAttribute="height" constant="80" id="jLZ-y2-rYU"/>
-                                    </constraints>
+                                <textField opaque="NO" contentMode="scaleToFill" restorationIdentifier="SignInViewController" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1hH-e0-WkE">
+                                    <rect key="frame" x="37.666666666666657" y="336" width="300" height="60"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                </textField>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TY4-az-34V">
+                                    <rect key="frame" x="37.666666666666657" y="505.66666666666669" width="300" height="20.333333333333314"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5X-qy-Pky">
-                                    <rect key="frame" x="62.666666666666657" y="659" width="249.99999999999997" height="50"/>
-                                    <color key="backgroundColor" red="0.41034108499999999" green="0.81560948659999999" blue="0.2581255865" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="250" id="Cwo-0m-BOI"/>
-                                        <constraint firstAttribute="height" constant="50" id="vcY-k5-M1s"/>
-                                    </constraints>
+                                    <rect key="frame" x="37.666666666666657" y="556" width="300" height="60"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="17"/>
                                     <state key="normal" title="Sign in">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
                                         <action selector="signInButton:" destination="-1" eventType="touchUpInside" id="TAe-fJ-7t0"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9X-Zk-nea">
-                                    <rect key="frame" x="62.666666666666657" y="729" width="249.99999999999997" height="45"/>
+                                    <rect key="frame" x="20" y="64" width="50" height="50"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="250" id="qVv-kH-NI5"/>
-                                        <constraint firstAttribute="height" constant="45" id="vsy-EL-JIo"/>
+                                        <constraint firstAttribute="height" constant="50" id="6VF-tv-H1v"/>
+                                        <constraint firstAttribute="width" constant="50" id="Q6a-2X-SHM"/>
                                     </constraints>
-                                    <state key="normal" title="Back to Sign Up">
-                                        <color key="titleColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="15"/>
+                                    <state key="normal" title="Back">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
                                         <action selector="backToSignUpButton:" destination="-1" eventType="touchUpInside" id="4gt-Xc-JVw"/>
                                     </connections>
                                 </button>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Lapsha" translatesAutoresizingMaskIntoConstraints="NO" id="bUy-3Y-XOF">
+                                    <rect key="frame" x="112.66666666666669" y="92" width="150" height="150"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="bUy-3Y-XOF" secondAttribute="height" multiplier="150:150" id="62O-mS-aWV"/>
+                                    </constraints>
+                                </imageView>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pNM-RW-arO">
+                                    <rect key="frame" x="37.666666666666657" y="396" width="300" height="60"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="60" id="kve-Xg-bbf"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="15"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                                </textField>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <color key="backgroundColor" red="0.79191333060000002" green="0.94435507060000001" blue="0.69407838580000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
-                                <constraint firstItem="Ey3-du-Bza" firstAttribute="top" secondItem="eHe-rY-nnn" secondAttribute="top" constant="305" id="1vx-53-xv6"/>
-                                <constraint firstItem="S5X-qy-Pky" firstAttribute="top" secondItem="TY4-az-34V" secondAttribute="bottom" constant="20" id="32n-id-gJL"/>
-                                <constraint firstItem="d9X-Zk-nea" firstAttribute="top" secondItem="S5X-qy-Pky" secondAttribute="bottom" constant="20" id="HD8-uh-Gt5"/>
-                                <constraint firstItem="S5X-qy-Pky" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="I8H-yG-LQ8"/>
-                                <constraint firstItem="TY4-az-34V" firstAttribute="top" secondItem="Ey3-du-Bza" secondAttribute="bottom" constant="145" id="LNw-NM-t55"/>
-                                <constraint firstItem="TY4-az-34V" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="QW1-Bh-95q"/>
-                                <constraint firstItem="d9X-Zk-nea" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="ep6-kA-EBD"/>
-                                <constraint firstItem="Ey3-du-Bza" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="i8v-rf-eIS"/>
+                                <constraint firstItem="pNM-RW-arO" firstAttribute="centerY" secondItem="eHe-rY-nnn" secondAttribute="centerY" constant="20" id="419-jG-n99"/>
+                                <constraint firstItem="TY4-az-34V" firstAttribute="width" secondItem="pNM-RW-arO" secondAttribute="width" id="48x-Pb-rWp"/>
+                                <constraint firstItem="pNM-RW-arO" firstAttribute="top" secondItem="1hH-e0-WkE" secondAttribute="bottom" id="8gs-hZ-4Wc"/>
+                                <constraint firstItem="1hH-e0-WkE" firstAttribute="width" secondItem="pNM-RW-arO" secondAttribute="width" id="CWt-3t-Bgw"/>
+                                <constraint firstItem="S5X-qy-Pky" firstAttribute="width" secondItem="pNM-RW-arO" secondAttribute="width" id="EXc-W8-Tid"/>
+                                <constraint firstItem="d9X-Zk-nea" firstAttribute="top" secondItem="eHe-rY-nnn" secondAttribute="topMargin" constant="12" id="GfO-vL-rYg"/>
+                                <constraint firstItem="S5X-qy-Pky" firstAttribute="height" secondItem="pNM-RW-arO" secondAttribute="height" id="Jmq-fM-U2y"/>
+                                <constraint firstItem="TY4-az-34V" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="MAS-29-CAT"/>
+                                <constraint firstItem="pNM-RW-arO" firstAttribute="width" secondItem="eHe-rY-nnn" secondAttribute="width" multiplier="0.8" id="Vn5-fe-qBz"/>
+                                <constraint firstItem="d9X-Zk-nea" firstAttribute="leading" secondItem="eHe-rY-nnn" secondAttribute="leadingMargin" constant="12" id="WKg-FT-koM"/>
+                                <constraint firstItem="1hH-e0-WkE" firstAttribute="height" secondItem="pNM-RW-arO" secondAttribute="height" id="YWf-2b-lSZ"/>
+                                <constraint firstItem="1hH-e0-WkE" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="Yoj-lD-kCy"/>
+                                <constraint firstItem="pNM-RW-arO" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="ZCL-fV-or1"/>
+                                <constraint firstItem="S5X-qy-Pky" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="Zoj-6x-Ufa"/>
+                                <constraint firstItem="TY4-az-34V" firstAttribute="bottom" secondItem="pNM-RW-arO" secondAttribute="bottom" constant="70" id="bit-9Z-uRh"/>
+                                <constraint firstItem="S5X-qy-Pky" firstAttribute="top" secondItem="pNM-RW-arO" secondAttribute="bottom" constant="100" id="kHs-nV-X0o"/>
+                                <constraint firstItem="bUy-3Y-XOF" firstAttribute="top" secondItem="eHe-rY-nnn" secondAttribute="topMargin" constant="40" id="odK-2A-FOr"/>
+                                <constraint firstItem="bUy-3Y-XOF" firstAttribute="width" secondItem="eHe-rY-nnn" secondAttribute="width" multiplier="0.4" id="td9-ax-fcJ"/>
+                                <constraint firstItem="bUy-3Y-XOF" firstAttribute="centerX" secondItem="eHe-rY-nnn" secondAttribute="centerX" id="zl4-aX-9Rn"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -126,4 +136,7 @@
             <point key="canvasLocation" x="136.80000000000001" y="131.52709359605913"/>
         </view>
     </objects>
+    <resources>
+        <image name="Lapsha" width="545" height="454"/>
+    </resources>
 </document>

@@ -10,5 +10,5 @@ import Foundation
 import UIKit
 
 protocol SignInViewModelProtocol {
-    func signIn(email: String, password: String, completion: ((ErrorViewModel?) -> Void)?)
+    func signIn(email: String, password: String, completion: ((String?, ErrorViewModel?) -> Void)?)
 }
